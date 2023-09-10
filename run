@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env node
 
 # Check for the command passed as an argument
 if [ "$1" == "install" ]; then
