@@ -16,7 +16,7 @@ export class NetScore {
         const responsivenessScore = Responsiveness.calculate(this.owner, this.repo);
         const licenseScore = License.calculate();
 
-        return correctnessScore + busFactorScore + rampUpScore + responsivenessScore + licenseScore;
+        return {correctnessScore, busFactorScore, rampUpScore, responsivenessScore, licenseScore, netScore};
     }
 }
 
