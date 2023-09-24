@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
-import { NetScore } from '.,/src/controller/NetScore';
-import * as ndjson from 'ndjson';
+import { NetScore } from './src/controllers/NetScore';
+import ndjson from 'ndjson';
 
 class PackageClassifier {
     urls: string[];
@@ -56,22 +56,21 @@ const classifier = new PackageClassifier('test.txt');
 const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
 console.log("Git URLs:");
 
+const results: any[] = [];
 
-
-gitUrls.forEach((url) => {
-    const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-    if (temp) {
-        const results: string[];
-        const owner = temp[1];
-        let repo = temp[2];
-        repo = repo.replace(/\.git$/, '');
-        const NScore = new NetScore(owner, repo);
-        const {correctnessScore, busFactorScore, rampUpScore, responsivenessScore, licenseScore, netScore} = NScore.calculate();
-        results.push({correctnessScore, busFactorScore, rampUpScore, responsivenessScore, licenseScore, netScore});
-        process.stdout.write(ndjson.stringify(results));
-    }
-});
-
+// Using a for..of loop to handle the asynchronous calls
+for (const url of gitUrls) {
+  const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if (temp) {
+    const owner = temp[1];
+    let repo = temp[2];
+    repo = repo.replace(/\.git$/, '');
+    const NScore = new NetScore(owner, repo);
+    const scoreResults = await NScore.calculate();
+    results.push(scoreResults);
+    process.stdout.write(ndjson.stringify(scoreResults));
+  }
+}
 
 console.log(`Git URLs: ${gitUrls.join(', ')}`);
 console.log(`NPM Package URLs: ${npmPackageUrls.join(', ')}`);
