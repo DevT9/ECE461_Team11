@@ -85,7 +85,7 @@ const parseBranchData = (branches: any[]): Branch[] => {
   return branchDetails;
 };
 
-export const getPullRequestsByContributor = async (
+export const getAllPullRequests = async (
   owner: string,
   repo: string
 ) => {
@@ -103,7 +103,7 @@ export const getPullRequestsByContributor = async (
   return contributors;
 };
 
-export const getIssuesClosedByContributor = async (
+export const getAllClosedIssues = async (
   owner: string,
   repo: string
 ) => {
@@ -142,7 +142,7 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
     allContributors.set(author, { ...current, commits: count });
   });
 
-  const prContributors = await getPullRequestsByContributor(owner, repo);
+  const prContributors = await getAllPullRequests(owner, repo);
   console.log('PR contributors', prContributors);
   prContributors.forEach((count, author) => {
     const current = allContributors.get(author) || {
@@ -153,7 +153,7 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
     allContributors.set(author, { ...current, prs: count });
   });
 
-  const issueContributors = await getIssuesClosedByContributor(owner, repo);
+  const issueContributors = await getAllClosedIssues(owner, repo);
   console.log('Issue contributors', issueContributors);
   issueContributors.forEach((count, author) => {
     const current = allContributors.get(author) || {
@@ -201,8 +201,8 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({
-    busFactor,
-    totalContributors,
-    sortedContributors: formattedContributors
+    busFactor
+    // totalContributors,
+    // sortedContributors: formattedContributors
   });
 };

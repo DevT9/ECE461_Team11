@@ -12,12 +12,7 @@ LOG_FILE = os.getenv("LOG_FILE", "logfile.log")
 
 # Configure logging based on verbosity level
 log_format = '%(asctime)s - %(levelname)s - %(message)s'
-if LOG_LEVEL == SILENT:
-    logging.basicConfig(filename=LOG_FILE, level=logging.CRITICAL, format=log_format)
-elif LOG_LEVEL == INFO:
-    logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format=log_format)
-elif LOG_LEVEL == DEBUG:
-    logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, format=log_format)
+logging.basicConfig(filename=LOG_FILE, format=log_format, level=logging.DEBUG)
 
 def log_message(level, message):
     """Log a message at the given level."""
@@ -30,6 +25,12 @@ def log_message(level, message):
     else:
         logging.error(f"Invalid log level: {level}")
 
-def log_error(message):
-    """Log an error message."""
-    logging.error(message)
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 3:
+        print("Usage: log_file.py [LOG_LEVEL] [MESSAGE]")
+        sys.exit(1)
+    
+    log_level = sys.argv[1]
+    message = sys.argv[2]
+    log_message(log_level, message)

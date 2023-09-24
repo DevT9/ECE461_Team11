@@ -3,7 +3,7 @@ import {
   getAllRepoCommits,
   getAllCollaborators,
   calculateBusFactor
-} from '../controllers/gitHub.controller';
+} from '../controllers/BusFactor';
 import { calculateRampUp } from '../controllers/RampUp';
 
 const router = Router();
