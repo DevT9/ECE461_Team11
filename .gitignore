@@ -2,3 +2,15 @@ coverage
 build
 node_modules
 package-lock.json
+.env
+dist/controllers/gitHub.controller.js
+dist/helpers/constants.js
+dist/index.js
+dist/routers/gitHub.router.js
+dist/utils/api.utils.js
+package.json
+run
+src/controllers/gitHub.controller.ts
+src/index.ts
+src/routers/gitHub.router.ts
+src/utils/api.utils.ts
