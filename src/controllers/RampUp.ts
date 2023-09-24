@@ -6,8 +6,8 @@ import {
 } from '../utils/RampUpAPI';
 import { Request, Response, NextFunction } from 'express';
 export const calculateRampUp = async (
-  req: Request,
-  res: Response,
+  owner: string,
+  repo: string,
 ) => {
   const { owner, repo } = req.query as { owner: string; repo: string };
   try {
