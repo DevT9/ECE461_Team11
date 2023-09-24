@@ -1,37 +1,44 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { readFileSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
 
 class PackageClassifier {
     urls: string[];
 
     constructor(file: string) {
-        // Read the file and store each line as a URL in the urls array
-        const fs = require('fs');
-        this.urls = fs.readFileSync(file, 'utf-8').split('\n');
+        if (!existsSync(file)) {
+            throw new Error('ERORR!!');
+        }
+        this.urls = readFileSync(file, 'utf-8').split('\n').filter(Boolean);
     }
 
     classifyUrls(): { gitUrls: string[], npmPackageUrls: string[] } {
         const gitUrls: string[] = [];
         const npmPackageUrls: string[] = [];
-
+    
         for (const url of this.urls) {
-            if (url.startsWith('git@') || url.startsWith('https://github.com/')) {
-                gitUrls.push(url);
+            if (url.startsWith('https://github.com/') || url.startsWith('git+https://github.com/') || url.startsWith('git+ssh://git@github.com/') || url.startsWith('ssh://git@github.com/')) {
+                let cleanUrl = url.replace('git+', '')
+                                   .replace('git+ssh://', '')
+                                   .replace('ssh://', '');
+                gitUrls.push(cleanUrl);
             } else if (url.startsWith('https://www.npmjs.com/package/')) {
+                npmPackageUrls.push(url);
                 const packageName = url.split('/').pop();
                 if (packageName) {
                     const repoUrl = this.getNpmPackageRepoUrl(packageName);
                     if (repoUrl) {
-                        gitUrls.push(repoUrl);
+                        let cleanRepoUrl = repoUrl.replace('git+', '')
+                                                  .replace('git+ssh://', '')
+                                                  .replace('ssh://', '');
+                        gitUrls.push(cleanRepoUrl);
                     }
-                    npmPackageUrls.push(url);
                 }
             }
         }
-
+    
         return { gitUrls, npmPackageUrls };
     }
-
+    
     private getNpmPackageRepoUrl(packageName: string): string | null {
         try {
             const output = execSync(`npm view ${packageName} repository.url`, { encoding: 'utf-8' });
@@ -45,5 +52,5 @@ class PackageClassifier {
 
 const classifier = new PackageClassifier('test.txt');
 const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
-console.log(`Git URLs: ${gitUrls}`);
-console.log(`NPM Package URLs: ${npmPackageUrls}`);
+console.log(`Git URLs: ${gitUrls.join(', ')}`);
+console.log(`NPM Package URLs: ${npmPackageUrls.join(', ')}`);
