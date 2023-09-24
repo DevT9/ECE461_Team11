@@ -52,5 +52,15 @@ class PackageClassifier {
 
 const classifier = new PackageClassifier('test.txt');
 const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
+console.log("Git URLs:");
+gitUrls.forEach((url) => {
+  const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if (temp) {
+    const owner = temp[1];
+    let repo = temp[2];
+    repo = repo.replace(/\.git$/, '');
+    console.log(`URL: ${url}, Owner: ${owner}, Repo: ${repo}`);
+  }
+});
 console.log(`Git URLs: ${gitUrls.join(', ')}`);
 console.log(`NPM Package URLs: ${npmPackageUrls.join(', ')}`);
