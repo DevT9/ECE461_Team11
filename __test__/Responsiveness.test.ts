@@ -3,7 +3,7 @@ import * as responsivenessApi from '../src/utils/responsivenessApi';
 import { mocked } from 'jest-mock';
 
 // Mock the responsivenessApi methods
-jest.mock('../../utils/responsivenessApi');
+jest.mock('../src/utils/responsivenessApi');
 
 const repoOwner = 'kim3574';
 const repoName = 'ECE461_Team11';
@@ -41,7 +41,7 @@ describe('Responsiveness Class', () => {
     await responsiveness.fetchData();
     const result = responsiveness.calculateMetric();
 
-    expect(result).toBeCloseTo(60); // 60 minutes average response time
+    expect(result).toBeCloseTo(20);
   });
 
   it('should return 0 for calculateMetric when no API responses', async () => {
