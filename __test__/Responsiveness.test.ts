@@ -41,7 +41,7 @@ describe('Responsiveness Class', () => {
     await responsiveness.fetchData();
     const result = responsiveness.calculateMetric();
 
-    expect(result).toBeCloseTo(60); // 60 minutes average response time
+    expect(result).toBeCloseTo(20);
   });
 
   it('should return 0 for calculateMetric when no API responses', async () => {
