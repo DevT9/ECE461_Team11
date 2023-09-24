@@ -30,15 +30,36 @@ case "$1" in
         # Run tests and capture the output
         TEST_OUTPUT=$(npm test 2>&1)
         EXIT_CODE=$?
-
+    
         # Parse the output to get the number of passed tests, total tests, and line coverage
         PASSED_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | awk '{for(i=1;i<=NF;i++) if ($i == "passed,") print $(i-1)}')
         TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | awk '{for(i=1;i<=NF;i++) if ($i == "total") print $(i-1)}')
         LINE_COVERAGE=$(echo "$TEST_OUTPUT" | grep "Lines" | awk -F':' '{print $2}' | tr -d ' %')
-
-        # Print the desired output format
-        echo "$PASSED_TESTS/$TOTAL_TESTS test cases passed. $LINE_COVERAGE% line coverage achieved."
-
+    
+        # Construct the desired output format
+        RESULT="$PASSED_TESTS/$TOTAL_TESTS test cases passed. $LINE_COVERAGE% line coverage achieved."
+    
+        # Log the result using the log function
+        log "$RESULT"
+    
+        # Extract and log the names of the failed test suites
+        FAILED_SUITES=$(echo "$TEST_OUTPUT" | grep "FAIL" | awk -F' ' '{print $2}')
+        if [ ! -z "$FAILED_SUITES" ]; then
+            log "Failed test suites:"
+            while IFS= read -r line; do
+                log "$line"
+            done <<< "$FAILED_SUITES"
+        fi
+    
+        # Extract and log the names of the failed tests
+        FAILED_TESTS=$(echo "$TEST_OUTPUT" | grep -E "✕|×" | awk -F' ' '{print $2}')
+        if [ ! -z "$FAILED_TESTS" ]; then
+            log "Failed tests:"
+            while IFS= read -r line; do
+                log "$line"
+            done <<< "$FAILED_TESTS"
+        fi
+    
         exit $EXIT_CODE
         ;;
     *)
