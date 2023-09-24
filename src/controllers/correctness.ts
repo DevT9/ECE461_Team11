@@ -1,7 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import { ESLint } from "eslint";
 import { execSync,exec } from "child_process";
-import {config} from "dotenv";
+/* import {config} from "dotenv"; */
+import {
+    fetchRepositoryStars,
+    fetchRepositoryForks,
+  } from '../utils/RampUpAPI';
 
 export class correctness {
     //private octokit: Octokit;
@@ -12,16 +16,16 @@ export class correctness {
 
     constructor(private owner: string, private repo: string) {
         // Initialize the Octokit client with an authentication token if needed
-        config();
+       /*  config();
         const token = process.env.GITHUB_TOKEN;
         this.octokit = new Octokit({
             auth: token,
-        });
+        }); */
     }
 
     async check(): Promise<number> {
         // Get the repository information using the GitHub API
-        try {
+        /* try {
             const response = await this.octokit.repos.get({
                 owner: this.owner,
                 repo: this.repo,
@@ -34,14 +38,13 @@ export class correctness {
         const { data: repoData } = await this.octokit.repos.get({
             owner: this.owner,
             repo: this.repo,
-        });
-        const stars = repoData.stargazers_count;
-        const forks = repoData.forks_count;
-        const watchers = repoData.watchers_count; */
+        }); */
+        const stars = await fetchRepositoryStars(this.owner, this.repo);
+        const forks = await fetchRepositoryForks(this.owner, this.repo);
         //console.log(`Stars: ${stars}, Forks: ${forks}, Watchers: ${watchers}`);
         // Calculate a score based on the number of stars, forks, and watchers
-        const power = this.calculateLowestPowerOf10(stars, forks, watchers);
-        const githubScore = (stars + forks + watchers) / power;
+        const power = this.calculateLowestPowerOf10(stars, forks);
+        const githubScore = (stars + forks) / power;
         const eslintScore = await this.LinterandTestChecker();
         const finalScore = (0.2 * githubScore) + (0.8 * eslintScore);
         if (finalScore > 1) {
@@ -51,8 +54,8 @@ export class correctness {
     
 
     }
-    private calculateLowestPowerOf10(num1: number, num2: number, num3: number): number {
-        const sum = num1 + num2 + num3;
+    private calculateLowestPowerOf10(num1: number, num2: number): number {
+        const sum = num1 + num2;
         let power = 1;
         while (power < sum) {
             power *= 10;

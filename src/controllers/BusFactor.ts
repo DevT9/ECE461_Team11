@@ -58,7 +58,7 @@ export const getAllRepoCommits = async (
   }
 
   const commitCounts: Map<string, number> = new Map();
-  for (let branchUrl of branches) {
+  for (const branchUrl of branches) {
     try {
       const response = await axios.get(branchUrl.url);
       console.log('RESPONSE!!', response);
@@ -121,12 +121,7 @@ export const getAllClosedIssues = async (
   return contributors;
 };
 
-export const calculateBusFactor = async (req: Request, res: Response) => {
-  const { owner, repo } = req.query;
-  if (typeof owner !== 'string' || typeof repo !== 'string') {
-    return res.status(400).json({ error: 'Owner and repo name required!' });
-  }
-
+export const calculateBusFactor = async (owner: string, repo: string) => {
   const allContributors: Map<
     string,
     { commits: number; prs: number; issues: number }
@@ -187,7 +182,7 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
     }
   );
 
-  for (let [, contributions] of sortedContributors) {
+  for (const [, contributions] of sortedContributors) {
     runningTotal +=
       contributions.commits + contributions.prs + contributions.issues;
     busFactor++;
@@ -200,9 +195,5 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
     ([author, contributions]) => ({ author, ...contributions })
   );
 
-  return res.status(200).json({
-    busFactor,
-    totalContributors,
-    sortedContributors: formattedContributors
-  });
+  return busFactor;
 };
