@@ -4,12 +4,12 @@ import {
   fetchRepositoryForks,
   fetchFirstCommitTime
 } from '../utils/RampUpAPI';
-import { Request, Response, NextFunction } from 'express';
+//import { Request, Response, NextFunction } from 'express';
 export const calculateRampUp = async (
   owner: string,
   repo: string,
 ) => {
-  const { owner, repo } = req.query as { owner: string; repo: string };
+  /* const { owner, repo } = req.query as { owner: string; repo: string }; */
   try {
     // Fetch data from GitHub API
     const contributors = await fetchRepositoryContributors(owner, repo);
@@ -47,10 +47,12 @@ export const calculateRampUp = async (
       rampUpScore += weights.FirstCommit * normalizedTimeDifference;
     }
 
-    console.log('Ramp-Up Score:', rampUpScore);
-    res.json({ rampUpScore });
+    /* console.log('Ramp-Up Score:', rampUpScore);
+    res.json({ rampUpScore }); */
+    return rampUpScore;
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).send('Internal Server Error');
+    return 0;
+    /* res.status(500).send('Internal Server Error'); */
   }
 };
