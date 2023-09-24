@@ -11,8 +11,6 @@ export const calculateRampUp = async (
   next: NextFunction
 ) => {
   const { owner, repo } = req.query as { owner: string; repo: string };
-  console.log('owner: ', owner);
-  console.log('repo: ', repo);
   try {
     // Fetch data from GitHub API
     const contributors = await fetchRepositoryContributors(owner, repo);
@@ -31,9 +29,6 @@ export const calculateRampUp = async (
     const forksContribution = weights.Forks * forks.length;
 
     // Calculate the ramp-up score
-    console.log('Contributions: ', contributorsContribution);
-    console.log('Stars: ', starsContribution);
-    console.log('forks: ', forksContribution);
     let rampUpScore =
       (contributorsContribution + starsContribution + forksContribution) /
       (weights.Contributors + weights.Stars + weights.Forks);
