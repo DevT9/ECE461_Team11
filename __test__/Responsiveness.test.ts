@@ -3,7 +3,7 @@ import * as responsivenessApi from '../src/utils/responsivenessApi';
 import { mocked } from 'jest-mock';
 
 // Mock the responsivenessApi methods
-jest.mock('../../utils/responsivenessApi');
+jest.mock('../src/utils/responsivenessApi');
 
 const repoOwner = 'kim3574';
 const repoName = 'ECE461_Team11';
