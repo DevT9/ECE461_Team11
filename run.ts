@@ -1,12 +1,14 @@
 import { execSync } from 'child_process';
+import fs from 'fs';
 
 class PackageClassifier {
     urls: string[];
+    private gitPattern: RegExp;
 
     constructor(file: string) {
-        // Read the file and store each line as a URL in the urls array
-        const fs = require('fs');
-        this.urls = fs.readFileSync(file, 'utf-8').split('\n');
+        this.urls = fs.readFileSync(file, 'utf-8').split('\n').filter(Boolean); // Added filter(Boolean) to remove empty lines
+        // eslint-disable-next-line no-useless-escape
+        this.gitPattern = new RegExp("https://github.com/[\w-]+/[\w-]+|git\+https://github.com/[\w-]+/[\w-]+\.git|git\+ssh://git@github.com/[\w-]+/[\w-]+\.git");
     }
 
     classifyUrls(): { gitUrls: string[], npmPackageUrls: string[] } {
@@ -15,7 +17,9 @@ class PackageClassifier {
 
         for (const url of this.urls) {
             if (url.startsWith('git@') || url.startsWith('https://github.com/')) {
-                gitUrls.push(url);
+                if (this.gitPattern.test(url)) {
+                    gitUrls.push(url);
+                }
             } else if (url.startsWith('https://www.npmjs.com/package/')) {
                 const packageName = url.split('/').pop();
                 if (packageName) {
@@ -27,7 +31,6 @@ class PackageClassifier {
                 }
             }
         }
-
         return { gitUrls, npmPackageUrls };
     }
 
@@ -40,6 +43,7 @@ class PackageClassifier {
             return null;
         }
     }
+
 }
 
 const classifier = new PackageClassifier('test.txt');

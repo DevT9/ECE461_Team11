@@ -58,7 +58,7 @@ export const getAllRepoCommits = async (
   }
 
   const commitCounts: Map<string, number> = new Map();
-  for (let branchUrl of branches) {
+  for (const branchUrl of branches) {
     try {
       const response = await axios.get(branchUrl.url);
       console.log('RESPONSE!!', response);
