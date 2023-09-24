@@ -4,7 +4,7 @@ import axios from 'axios';
 export class License extends MetricParent {
   private repoOwner: string;
   private repoName: string;
-  private licenseName: string = '';
+  private licenseDescription: string = '';
 
   constructor(someSharedProperty: string, repoOwner: string, repoName: string) {
     super(someSharedProperty, 'License Scorer', 'kim3574');
@@ -13,32 +13,30 @@ export class License extends MetricParent {
   }
 
   async fetchData(): Promise<any> {
-    const url = `https://api.github.com/repos/${this.repoOwner}/${this.repoName}/license`;
+    const url = `https://raw.githubusercontent.com/${this.repoOwner}/${this.repoName}/master/README.md`;
     try {
       const response = await axios.get(url);
-      this.licenseName = response.data.license.spdx_id;
-      return Promise.resolve('Fetched license data successfully');
+      const readmeContent = response.data;
+
+      // Use regex to extract license description from README
+      const licenseRegex = /##\s*License\s*([\s\S]*?)(##|$)/i;
+      const match = licenseRegex.exec(readmeContent);
+      if (match && match[1]) {
+        this.licenseDescription = match[1].trim();
+      }
+
+      return Promise.resolve('Fetched license data from README successfully');
     } catch (error) {
-      console.error('Error fetching license data:', error);
+      console.error('Error fetching README data:', error);
       return Promise.reject(error);
     }
   }
 
   calculateMetric(): number {
-    switch (this.licenseName) {
-      case 'MIT':
-      case 'Apache-2.0':
-      case 'BSD-2-Clause':
-      case 'BSD-3-Clause':
-        return 10;
-      case 'GPL-3.0':
-      case 'LGPL-3.0':
-        return 7;
-      case 'NOASSERTION':
-      case 'UNKNOWN':
-        return 3;
-      default:
-        return 1;
+    if (this.licenseDescription.includes('LGPLv2.1')) {
+      return 10; // Compatible with LGPLv2.1
+    } else {
+      return 1; // Not compatible
     }
   }
 }
