@@ -43,6 +43,43 @@ describe('NetScore', () => {
     // Expected score calculation: 0.8 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.95
     expect(score).toBe(3.95);
   });
+  it('calculates the net score with minimum values correctly', async () => {
+    // Mock correctness to return the minimum score
+    correctness.mockImplementation(() => ({
+      check: jest.fn(() => 0),
+    }));
 
-  // Add more test cases as needed to cover different scenarios
+    // Mock other dependencies as before
+    const netScore = new NetScore('github_owner', 'repository_name');
+    const score = await netScore.calculate();
+
+    // Expected score calculation: 0 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
+    expect(score).toBe(3.15);
+  });
+
+  it('calculates the net score with maximum values correctly', async () => {
+    // Mock correctness to return the maximum score
+    correctness.mockImplementation(() => ({
+      check: jest.fn(() => 1),
+    }));
+
+    // Mock other dependencies as before
+    const netScore = new NetScore('github_owner', 'repository_name');
+    const score = await netScore.calculate();
+
+    // Expected score calculation: 1 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
+    expect(score).toBe(3.15);
+  });
+
+  it('calculates the net score with zero bus factor correctly', async () => {
+    // Mock bus factor to return zero
+    calculateBusFactor.mockImplementation(() => 0);
+
+    // Mock other dependencies as before
+    const netScore = new NetScore('github_owner', 'repository_name');
+    const score = await netScore.calculate();
+
+    // Expected score calculation: 0.8 (correctness) + 0 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.35
+    expect(score).toBe(3.35);
+  });
 });
