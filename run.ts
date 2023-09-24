@@ -58,7 +58,6 @@ console.log("Git URLs:");
 
 const results: any[] = [];
 
-// Using a for..of loop to handle the asynchronous calls
 for (const url of gitUrls) {
   const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
   if (temp) {
