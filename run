@@ -42,7 +42,7 @@ case "$1" in
         exit $EXIT_CODE
         ;;
     *)
-        log "Invalid command. Use 'install' or 'test'."
+        log "Invalid command. Use 'install' or 'test' or 'run'"
         exit 1
         ;;
     "run")
@@ -53,13 +53,14 @@ case "$1" in
         fi
 
         log "Running: $FILENAME."
-        node run.js "$FILENAME" || { log "Node script failed"; exit 1; }
+        tsc run.ts || { log "tsc failed"; exit 1; }
+        node run.js "$2" || { log "node run.js failed"; exit 1; }
 
         log "SUCCESS!!: $FILENAME."
         exit 0
         ;;
     *)
-        log "Invalid command."
+        log "Invalid command. Use 'install' or 'test' or 'run'"
         exit 1
         ;;
 esac
