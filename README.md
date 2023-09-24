@@ -18,21 +18,21 @@ There is an executable ./run file in the repository that lets the user run the f
 The metrics provided by this product can help ACME Corporation in its larger goal of establishing an internal package registry to reduce reliability on npm by providing ACME Corp employees with vital information regarding a particular package.
 
 METRICS:
-1) Bus Factor:
-Identify and count key contributors 
-Check the code ownership distribution
-2) Correctness:
-Run ESLint through .ts/.js files
-Check for test suite
-Check stars and forks
-3) Responsive Maintainer:
-Check time between submiting a PR/issue and that PR/issue getting merged
-Check the length of comments on PRs
-4) License:
-Check if license file exists and is compatible
-5) Ramp Up:
-Examine number of forks, stars, and contributors
-Time taken by a new contributor to make their first commit
+1) Bus Factor: <br />
+Identify and count key contributors <br />
+Check the code ownership distribution <br />
+2) Correctness: <br />
+Run ESLint through .ts/.js files <br />
+Check for test suite <br />
+Check stars and forks <br />
+3) Responsive Maintainer: <br />
+Check time between submiting a PR/issue and that PR/issue getting merged <br />
+Check the length of comments on PRs <br />
+4) License: <br />
+Check if license file exists and is compatible <br />
+5) Ramp Up: <br />
+Examine number of forks, stars, and contributors <br />
+Time taken by a new contributor to make their first commit <br />
 
 Folder Structure:
 src/ - contains all the source code  <br />
