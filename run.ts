@@ -63,36 +63,36 @@ class PackageClassifier {
   }
 }
 
-const filename = process.argv[2];
-if (!filename) {
-    console.error("No filename provided.");
-    process.exit(1);
-}
-const classifier = new PackageClassifier(filename);
-const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
-console.log('Git URLs:');
-
-  try {
-    const classifier = new PackageClassifier('test.txt');
-    const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
-    
-    const results: any[] = [];
-
-    for (const url of gitUrls) {
-      const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-      if (temp) {
-        const owner = temp[1];
-        let repo = temp[2];
-        repo = repo.replace(/\.git$/, '');
-        const NScore = new NetScore(owner, repo);
-        const scoreResults = await NScore.calculate();
-        results.push(scoreResults);
-        process.stdout.write(ndjson.stringify(scoreResults));
+async function main() {
+    try {
+      const filename = process.argv[2];
+      if (!filename) {
+        console.error("No filename provided.");
+        process.exit(1);
       }
+      const classifier = new PackageClassifier(filename);
+      const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
+  
+      console.log('Git URLs:');
+    
+      const results: any[] = [];
+  
+      for (const url of gitUrls) {
+        const temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+        if (temp) {
+          const owner = temp[1];
+          let repo = temp[2];
+          repo = repo.replace(/\.git$/, '');
+          const NScore = new NetScore(owner, repo);
+          const scoreResults = await NScore.calculate();
+          results.push(scoreResults);
+          process.stdout.write(ndjson.stringify(scoreResults));
+        }
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
-
-    console.log(`Git URLs: ${gitUrls.join(', ')}`);
-    console.log(`NPM Package URLs: ${npmPackageUrls.join(', ')}`);
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
+}
+  
+main();
+  
