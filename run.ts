@@ -63,7 +63,12 @@ class PackageClassifier {
   }
 }
 
-const classifier = new PackageClassifier('test.txt');
+const filename = process.argv[2];
+if (!filename) {
+    console.error("No filename provided.");
+    process.exit(1);
+}
+const classifier = new PackageClassifier(filename);
 const { gitUrls, npmPackageUrls } = classifier.classifyUrls();
 console.log('Git URLs:');
 
