@@ -1,5 +1,5 @@
 import { correctness } from "../src/controllers/correctness";
-import { getAllRepoCommits, getAllPullRequests, getAllClosedIssues, calculateBusFactor } from "../src/controllers/BusFactor";
+import { calculateBusFactor } from "../src/controllers/BusFactor";
 import { calculateRampUp } from "../src/controllers/RampUp";
 import { Responsiveness } from "../src/controllers/Responsiveness";
 import { License } from "../src/controllers/License";
@@ -10,7 +10,7 @@ export class NetScore {
     calculate(): number {
         const correctnessobj = correctness(this.owner, this.repo);
         const correctnessScore = await correctnessobj.check();
-        const busFactorScore = calculateBusFactor(getAllRepoCommits(), getAllPullRequests(), getAllClosedIssues());
+        const busFactorScore = calculateBusFactor(this.owner, this.repo);
         const rampUpScore = calculateRampUp(this.owner, this.repo);
         
         const responsivenessScore = Responsiveness.calculate(this.owner, this.repo);
