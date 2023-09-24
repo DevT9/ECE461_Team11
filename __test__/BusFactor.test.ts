@@ -32,4 +32,22 @@ describe('calculateBusFactor', () => {
       })
     );
   });
+
+  it('HANDLING ERRoRS', async () => {
+    const mockResponse: any = {
+      json: jest.fn(),
+      status: jest.fn(() => mockResponse)
+    };
+
+    (getAllRepoCommits as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error('API error')));
+
+    await calculateBusFactor('github_owner', 'repository_name');
+
+    expect(getAllRepoCommits).toHaveBeenCalledWith('github_owner', 'repository_name');
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: 'API error'
+      })
+    );
+  });
 });
