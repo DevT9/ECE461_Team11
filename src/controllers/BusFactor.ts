@@ -201,8 +201,8 @@ export const calculateBusFactor = async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({
-    busFactor,
-    totalContributors,
-    sortedContributors: formattedContributors
+    busFactor
+    // totalContributors,
+    // sortedContributors: formattedContributors
   });
 };
