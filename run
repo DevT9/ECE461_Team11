@@ -36,10 +36,6 @@ case "$1" in
         TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | sed -n 's/.*\([0-9]\+ total\).*/\1/p' | awk '{print $1}')
         LINE_COVERAGE=$(echo "$TEST_OUTPUT" | grep "Lines" | sed -n 's/.*: \([0-9]\+\)% .*/\1/p')
 
-
-
-
-
         # Print the desired output format
         echo "$PASSED_TESTS/$TOTAL_TESTS test cases passed. $LINE_COVERAGE% line coverage achieved."
 
@@ -47,6 +43,23 @@ case "$1" in
         ;;
     *)
         log "Invalid command. Use 'install' or 'test'."
+        exit 1
+        ;;
+    "run")
+        FILENAME="$2"
+        if [ -z "$FILENAME" ]; then
+            log "Filename not provided"
+            exit 1
+        fi
+
+        log "Running: $FILENAME."
+        node run.js "$FILENAME" || { log "Node script failed"; exit 1; }
+
+        log "SUCCESS!!: $FILENAME."
+        exit 0
+        ;;
+    *)
+        log "Invalid command."
         exit 1
         ;;
 esac
