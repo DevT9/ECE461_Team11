@@ -1,8 +1,21 @@
-Project Members:
-1) Dev Thakkar
-2) Jonathan Dow
-3) Rohan Sagar (rsagar@purdue.edu)
-4) Dongwon Kim
+A CLI Interface to score npm packages on specified metrics
+
+Our code leverages the GitHub API to judge the code on these metrics:
+1) Bus Factor
+2) Correctness
+3) Ramp Up
+4) Responsiveness
+5) License
+
+We evaluated the package on these metrics by obtaining valuable information about contributors, pull requests, issues, stars, forks etc.
+
+There is an executable ./run file in the repository that lets the user run the following commands:
+1) ./run install: To install any dependencies in userland
+2) ./run URL_FILE:  This takes in a list of URLs and produces a NDJSON ouptut with the fields “URL”, “NetScore”, “RampUp”, “Correctness”, “BusFactor”, 
+“ResponsiveMaintainer”, and “License” and values in the range [0, 1] where 0 indicates total failure and 1 indicates perfection.
+3) ./run test: Runs the test cases for the given code outputs the number of tests passed and the code coverage obtained.
+
+The metrics provided by this product can help ACME Corporation in its larger goal of establishing an internal package registry to reduce reliability on npm by providing ACME Corp employees with vital information regarding a particular package.  
 
 Folder Structure:
 src/ - contains all the source code  <br />
@@ -13,10 +26,9 @@ src/models/ - defines the interfaces for api  <br />
 src/routes/ - contains all the routes  <br />
 src/utils/ - all general purpose functions that can be used anywhere in the application  <br />
 dist/ - contains all compiled javascript code  <br />
-# Prettier is installed as a dev dependency. It will automatically format the code when you save a file. It will run automatically when `npm run dev` or `npm run start` is run. If you want to run it manually, run `npm run prettier-format`
-## How to run the application
-1) Clone the repository
-2) Replace all empty env variables with the correct values
-3) Run `npm install` to install all the dependencies
-4) Run `npm run dev` to start the application in development mode (automatically restarts the server when changes are made - uses nodemon)
-5) Run `npm run start` to start the application in production mode (does not restart the server when changes are made)
+
+Project Members:
+1) Dev Thakkar (duthakka@purdue.edu)
+2) Jonathan Dow (dow3@purdue.edu)
+3) Rohan Sagar (rsagar@purdue.edu)
+4) Dongwon Kim (kim3574@purdue.edu)
