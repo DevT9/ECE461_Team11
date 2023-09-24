@@ -15,7 +15,24 @@ There is an executable ./run file in the repository that lets the user run the f
 “ResponsiveMaintainer”, and “License” and values in the range [0, 1] where 0 indicates total failure and 1 indicates perfection.
 3) ./run test: Runs the test cases for the given code outputs the number of tests passed and the code coverage obtained.
 
-The metrics provided by this product can help ACME Corporation in its larger goal of establishing an internal package registry to reduce reliability on npm by providing ACME Corp employees with vital information regarding a particular package.  
+The metrics provided by this product can help ACME Corporation in its larger goal of establishing an internal package registry to reduce reliability on npm by providing ACME Corp employees with vital information regarding a particular package.
+
+METRICS:
+1) Bus Factor:
+Identify and count key contributors 
+Check the code ownership distribution
+2) Correctness:
+Run ESLint through .ts/.js files
+Check for test suite
+Check stars and forks
+3) Responsive Maintainer:
+Check time between submiting a PR/issue and that PR/issue getting merged
+Check the length of comments on PRs
+4) License:
+Check if license file exists and is compatible
+5) Ramp Up:
+Examine number of forks, stars, and contributors
+Time taken by a new contributor to make their first commit
 
 Folder Structure:
 src/ - contains all the source code  <br />
