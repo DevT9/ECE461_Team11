@@ -34,9 +34,9 @@ export class License extends MetricParent {
 
   calculateMetric(): number {
     if (this.licenseDescription.includes('LGPLv2.1')) {
-      return 10; // Compatible with LGPLv2.1
+      return 10; 
     } else {
-      return 1; // Not compatible
+      return 1;
     }
   }
 }
