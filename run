@@ -32,9 +32,9 @@ case "$1" in
         EXIT_CODE=$?
 
         # Parse the output to get the number of passed tests, total tests, and line coverage
-        PASSED_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | sed -n 's/.*\([0-9]\+ passed\).*/\1/p' | awk '{print $1}')
-        TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | sed -n 's/.*\([0-9]\+ total\).*/\1/p' | awk '{print $1}')
-        LINE_COVERAGE=$(echo "$TEST_OUTPUT" | grep "Lines" | sed -n 's/.*: \([0-9]\+\)% .*/\1/p')
+        PASSED_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | awk '{for(i=1;i<=NF;i++) if ($i == "passed,") print $(i-1)}')
+        TOTAL_TESTS=$(echo "$TEST_OUTPUT" | grep "Tests:" | awk '{for(i=1;i<=NF;i++) if ($i == "total") print $(i-1)}')
+        LINE_COVERAGE=$(echo "$TEST_OUTPUT" | grep "Lines" | awk -F':' '{print $2}' | tr -d ' %')
 
         # Print the desired output format
         echo "$PASSED_TESTS/$TOTAL_TESTS test cases passed. $LINE_COVERAGE% line coverage achieved."
