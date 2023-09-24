@@ -25,8 +25,7 @@ describe('calculateRampUp', () => {
 
     await calculateRampUp(
       { query: { owner: 'github_owner', repo: 'repository_name' } } as any,
-      mockResponse as any,
-      {} as any
+      mockResponse as any
     );
 
     expect(fetchRepositoryContributors).toHaveBeenCalledWith('github_owner', 'repository_name');
@@ -48,8 +47,7 @@ describe('calculateRampUp', () => {
 
     await calculateRampUp(
       { query: { owner: 'github_owner', repo: 'repository_name' } } as any,
-      mockResponse as any,
-      {} as any
+      mockResponse as any
     );
 
     // Expect that the code handles null firstCommitTime gracefully
@@ -70,8 +68,7 @@ describe('calculateRampUp', () => {
 
     await calculateRampUp(
       { query: { owner: 'github_owner', repo: 'repository_name' } } as any,
-      mockResponse as any,
-      {} as any
+      mockResponse as any
     );
 
     // Expect that the code handles errors during API fetch
@@ -98,8 +95,7 @@ describe('calculateRampUp', () => {
 
     await calculateRampUp(
       { query: { owner: 'github_owner', repo: 'repository_name' } } as any,
-      mockResponse as any,
-      {} as any
+      mockResponse as any
     );
 
     // Expect that the code handles the case with non-zero contributors, stars, forks, and first commit time

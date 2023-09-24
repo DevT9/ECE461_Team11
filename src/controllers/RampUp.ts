@@ -8,7 +8,6 @@ import { Request, Response, NextFunction } from 'express';
 export const calculateRampUp = async (
   req: Request,
   res: Response,
-  next: NextFunction
 ) => {
   const { owner, repo } = req.query as { owner: string; repo: string };
   try {
