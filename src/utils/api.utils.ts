@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { newToken } from '../index';
 
 export const getRequest = async (endpoint: string, params?: any) => {
+  console.log(newToken);
   const url = `https://api.github.com${endpoint}`;
-  const token = "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";
+  const token = newToken;
   if (!token) {
     throw new Error('No bearer token found');
   }
