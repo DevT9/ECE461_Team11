@@ -44,7 +44,7 @@ var getRequest = function (endpoint, params) { return __awaiter(void 0, void 0, 
         switch (_a.label) {
             case 0:
                 url = "https://api.github.com".concat(endpoint);
-                token = "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";
+                token = "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";
                 if (!token) {
                     throw new Error('No bearer token found');
                 }

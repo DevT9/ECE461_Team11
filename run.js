@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,14 +53,17 @@ var NetScore_1 = require("./src/controllers/NetScore");
 var ndjson = require('ndjson');
 var PackageClassifier = /** @class */ (function () {
     function PackageClassifier(file) {
-        console.log("HELOOOO");
+        //console.log("HELOOOO");
         if (!(0, fs_1.existsSync)(file)) {
             throw new Error('ERORR!!');
         }
         this.urls = (0, fs_1.readFileSync)(file, 'utf-8').split('\n').filter(Boolean);
     }
+    PackageClassifier.prototype.getUrls = function () {
+        return this.urls;
+    };
     PackageClassifier.prototype.classifyUrls = function () {
-        console.log("CLASSIFY URLS CALLED!");
+        //console.log("CLASSIFY URLS CALLED!");
         var gitUrls = [];
         var npmPackageUrls = [];
         for (var _i = 0, _a = this.urls; _i < _a.length; _i++) {
@@ -79,7 +93,9 @@ var PackageClassifier = /** @class */ (function () {
                 }
             }
         }
-        return { gitUrls: gitUrls, npmPackageUrls: npmPackageUrls };
+        var x = { gitUrls: gitUrls, npmPackageUrls: npmPackageUrls };
+        //console.log("X", x);
+        return x;
     };
     PackageClassifier.prototype.getNpmPackageRepoUrl = function (packageName) {
         try {
@@ -97,45 +113,51 @@ var PackageClassifier = /** @class */ (function () {
 }());
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var filename, classifier, _a, gitUrls, npmPackageUrls, results, _i, gitUrls_1, url, temp, owner, repo, NScore, scoreResults, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var filename, classifier, _a, gitUrls, npmPackageUrls, urls, i, results, _i, _b, url, temp, owner, repo, NScore, scoreResults, URL_1, score_results_with_url, error_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _b.trys.push([0, 5, , 6]);
+                    _c.trys.push([0, 5, , 6]);
                     filename = process.argv[2];
-                    console.log("FILENAME!!!", filename);
+                    //console.log("FILENAME!!!", filename);
                     if (!filename) {
                         console.error("No filename provided.");
                         process.exit(1);
                     }
                     classifier = new PackageClassifier(filename);
                     _a = classifier.classifyUrls(), gitUrls = _a.gitUrls, npmPackageUrls = _a.npmPackageUrls;
-                    console.log('Git URLs:');
+                    urls = classifier.getUrls();
+                    i = 0;
                     results = [];
-                    _i = 0, gitUrls_1 = gitUrls;
-                    _b.label = 1;
+                    _i = 0, _b = (gitUrls);
+                    _c.label = 1;
                 case 1:
-                    if (!(_i < gitUrls_1.length)) return [3 /*break*/, 4];
-                    url = gitUrls_1[_i];
+                    if (!(_i < _b.length)) return [3 /*break*/, 4];
+                    url = _b[_i];
                     temp = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
                     if (!temp) return [3 /*break*/, 3];
                     owner = temp[1];
                     repo = temp[2];
                     repo = repo.replace(/\.git$/, '');
-                    console.log("URL", url);
-                    NScore = new NetScore_1.NetScore(owner, repo);
+                    NScore = new NetScore_1.NET_SCORE(owner, repo);
                     return [4 /*yield*/, NScore.calculate()];
                 case 2:
-                    scoreResults = _b.sent();
+                    scoreResults = _c.sent();
+                    URL_1 = urls[i];
+                    score_results_with_url = __assign({ URL: URL_1 }, scoreResults);
+                    i++;
+                    /*           console.log("SCORE RESULTS", scoreResults); */
                     results.push(scoreResults);
-                    process.stdout.write(ndjson.stringify(scoreResults));
-                    _b.label = 3;
+                    /*           console.log("RESULTS", results); */
+                    //process.stdout.write(ndjson.stringify(scoreResults));
+                    console.log(JSON.stringify(score_results_with_url));
+                    _c.label = 3;
                 case 3:
                     _i++;
                     return [3 /*break*/, 1];
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    error_1 = _b.sent();
+                    error_1 = _c.sent();
                     console.error('An error occurred:', error_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];

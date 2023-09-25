@@ -17,14 +17,14 @@ export const getAllRepoBranches = async (
     );
     return parseBranchData(response);
   } catch (error: any) {
-    console.log('Error!!!:', error);
+    //console.log('Error!!!:', error);
     return null;
   }
 };
 
 // export const getAllCollaborators = async (req: Request, res: Response) => {
 //   const { owner, repo } = req.query;
-//   console.log('owner:', owner, 'repo:', repo);
+//   //console.log('owner:', owner, 'repo:', repo);
 //   if (typeof owner !== 'string' || typeof repo !== 'string') {
 //     return res.status(400).json({ error: 'Owner and repo name required!' });
 //   }
@@ -36,7 +36,7 @@ export const getAllRepoBranches = async (
 //       return res.status(400).json({ error: 'Error getting collaborators' });
 //     }
 //   } catch (error: any) {
-//     console.log('Error:', error);
+//     //console.log('Error:', error);
 //     return res.status(400).json({ error: 'Error getting collabs!!' });
 //   }
 // };
@@ -45,7 +45,7 @@ export const getAllRepoCommits = async (
   owner: string,
   repo: string
 ): Promise<Map<string, number> | null> => {
-  console.log("COMMITS");
+  //console.log("COMMITS");
   const branches = await getAllRepoBranches(
     owner,
     repo
@@ -58,13 +58,13 @@ export const getAllRepoCommits = async (
   for (const branchUrl of branches) {
     try {
       const response = await axios.get(branchUrl.url);
-      console.log('RESPONSE!!', response);
+      //console.log('RESPONSE!!', response);
       const author = response.data?.user?.login;
       if (author) {
         commitCounts.set(author, (commitCounts.get(author) || 0) + 1);
       }
     } catch (error: any) {
-      console.error(`error with this url: ${branchUrl.url}!!!!`, error);
+      //console.error(`error with this url: ${branchUrl.url}!!!!`, error);
     }
   }
   return commitCounts;
@@ -86,7 +86,7 @@ export const getAllPullRequests = async (
   owner: string,
   repo: string
 ) => {
-  console.log("PRS");
+  //console.log("PRS");
   const response = await getRequest(
     `/repos/${owner}/${repo}/pulls?state=closed`
   );
@@ -105,7 +105,7 @@ export const getAllClosedIssues = async (
   owner: string,
   repo: string
 ) => {
-  console.log("CLOSED ISSUES");
+  //console.log("CLOSED ISSUES");
   const response = await getRequest(
     `/repos/${owner}/${repo}/issues?state=closed`
   );
@@ -121,14 +121,14 @@ export const getAllClosedIssues = async (
 };
 
 export const calculateBusFactor = async (owner: string, repo: string) => {
-  console.log("HELLOOOO");
+  //console.log("HELLOOOO");
   const allContributors: Map<
     string,
     { commits: number; prs: number; issues: number }
   > = new Map();
-  console.log("CALCULATING BUS FACTOR");
+  //console.log("CALCULATING BUS FACTOR");
   const commitContributors = await getAllRepoCommits(owner, repo);
-  console.log('Commit Contributors', commitContributors);
+  //console.log('Commit Contributors', commitContributors);
   commitContributors?.forEach((count, author) => {
     const current = allContributors.get(author) || {
       commits: 0,
@@ -139,7 +139,7 @@ export const calculateBusFactor = async (owner: string, repo: string) => {
   });
 
   const prContributors = await getAllPullRequests(owner, repo);
-  console.log('PR contributors', prContributors);
+  //console.log('PR contributors', prContributors);
   prContributors.forEach((count, author) => {
     const current = allContributors.get(author) || {
       commits: 0,
@@ -150,7 +150,7 @@ export const calculateBusFactor = async (owner: string, repo: string) => {
   });
 
   const issueContributors = await getAllClosedIssues(owner, repo);
-  console.log('Issue contributors', issueContributors);
+  //console.log('Issue contributors', issueContributors);
   issueContributors.forEach((count, author) => {
     const current = allContributors.get(author) || {
       commits: 0,
@@ -195,6 +195,6 @@ export const calculateBusFactor = async (owner: string, repo: string) => {
   const formattedContributors = sortedContributors.map(
     ([author, contributions]) => ({ author, ...contributions })
   );
-  console.log("BUS FACTOR", busFactor);
+  //console.log("BUS FACTOR", busFactor);
   return busFactor;
 };

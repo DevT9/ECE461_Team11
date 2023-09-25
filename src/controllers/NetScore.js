@@ -36,76 +36,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.NetScore = void 0;
+exports.NET_SCORE = void 0;
 var correctness_1 = require("./correctness");
 var BusFactor_1 = require("./BusFactor");
 var RampUp_1 = require("./RampUp");
 var Responsiveness_1 = require("./Responsiveness");
 var License_1 = require("./License");
-var NetScore = /** @class */ (function () {
-    function NetScore(owner, repo) {
+var NET_SCORE = /** @class */ (function () {
+    function NET_SCORE(owner, repo) {
         this.owner = owner;
         this.repo = repo;
     }
     ;
-    NetScore.prototype.calculate = function () {
+    NET_SCORE.prototype.calculate = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var correctnessobj, correctnessScore, e_1, busFactorScore, e_2, rampUpScore, responsiveness, res, responsivenessScore, license, licenseScore, netScore;
+            var correctnessobj, CORRECTNESS_SCORE, e_1, BUS_FACTOR_SCORE, e_2, RAMP_UP_SCORE, responsiveness, RESPONSIVE_MAINTAINER_SCORE, license, LICENSE_SCORE, NET_SCORE;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("HERE");
                         correctnessobj = new correctness_1.correctness(this.owner, this.repo);
-                        console.log("correctness", correctnessobj);
-                        correctnessScore = 0;
+                        CORRECTNESS_SCORE = 0;
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, correctnessobj.check()];
                     case 2:
-                        correctnessScore = _a.sent();
-                        console.log("correctnessScore", correctnessScore);
+                        CORRECTNESS_SCORE = _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
                         e_1 = _a.sent();
-                        console.log("Error", e_1);
                         return [3 /*break*/, 4];
                     case 4:
-                        busFactorScore = 0;
+                        BUS_FACTOR_SCORE = 0;
                         _a.label = 5;
                     case 5:
                         _a.trys.push([5, 7, , 8]);
                         return [4 /*yield*/, (0, BusFactor_1.calculateBusFactor)(this.owner, this.repo)];
                     case 6:
-                        busFactorScore = _a.sent();
-                        console.log("BusFactor", busFactorScore);
+                        BUS_FACTOR_SCORE = _a.sent();
                         return [3 /*break*/, 8];
                     case 7:
                         e_2 = _a.sent();
-                        console.log("Error", e_2);
                         return [3 /*break*/, 8];
-                    case 8: return [4 /*yield*/, (0, RampUp_1.calculateRampUp)(this.owner, this.repo)];
+                    case 8:
+                        if (BUS_FACTOR_SCORE > 1) {
+                            BUS_FACTOR_SCORE = 1;
+                        }
+                        return [4 /*yield*/, (0, RampUp_1.calculateRampUp)(this.owner, this.repo)];
                     case 9:
-                        rampUpScore = _a.sent();
-                        console.log("rampUpScore", rampUpScore);
+                        RAMP_UP_SCORE = _a.sent();
                         responsiveness = new Responsiveness_1.Responsiveness('someSharedProperty', this.owner, this.repo);
-                        console.log("Responsiveness", responsiveness);
-                        return [4 /*yield*/, responsiveness.fetchData()];
-                    case 10:
-                        res = _a.sent();
-                        console.log("RES", res);
-                        responsivenessScore = responsiveness.calculateMetric();
-                        console.log("RESPONSIVENESSSCORE", responsivenessScore);
+                        RESPONSIVE_MAINTAINER_SCORE = responsiveness.calculateMetric();
                         license = new License_1.License('someSharedProperty', this.owner, this.repo);
-                        licenseScore = license.calculateMetric();
-                        console.log("licenseScore", licenseScore);
-                        netScore = (correctnessScore * 0.25 + busFactorScore * 0.15 + rampUpScore * 0.25 + responsivenessScore * 0.3 + licenseScore * 0.05);
-                        console.log("netscore", netScore);
-                        return [2 /*return*/, { correctnessScore: correctnessScore, busFactorScore: busFactorScore, rampUpScore: rampUpScore, responsivenessScore: responsivenessScore, licenseScore: licenseScore, netScore: netScore }];
+                        LICENSE_SCORE = license.calculateMetric();
+                        NET_SCORE = (CORRECTNESS_SCORE * 0.25 + BUS_FACTOR_SCORE * 0.15 + RAMP_UP_SCORE * 0.25 + RESPONSIVE_MAINTAINER_SCORE * 0.3 + LICENSE_SCORE * 0.05);
+                        //console.log("NET_SCORE", NET_SCORE);
+                        return [2 /*return*/, { NET_SCORE: NET_SCORE, RAMP_UP_SCORE: RAMP_UP_SCORE, CORRECTNESS_SCORE: CORRECTNESS_SCORE, BUS_FACTOR_SCORE: BUS_FACTOR_SCORE, RESPONSIVE_MAINTAINER_SCORE: RESPONSIVE_MAINTAINER_SCORE, LICENSE_SCORE: LICENSE_SCORE }];
                 }
             });
         });
     };
-    return NetScore;
+    return NET_SCORE;
 }());
-exports.NetScore = NetScore;
+exports.NET_SCORE = NET_SCORE;

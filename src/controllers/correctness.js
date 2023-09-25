@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.correctness = void 0;
-var eslint_1 = require("eslint");
 var child_process_1 = require("child_process");
 /* import {config} from "dotenv"; */
 var RampUpAPI_1 = require("../utils/RampUpAPI");
@@ -58,20 +57,22 @@ var correctness = /** @class */ (function () {
     }
     correctness.prototype.check = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var stars, forks, power, githubScore, eslintScore, finalScore;
+            var stars, forks, stars_count, forks_count, power, githubScore, eslintScore, finalScore;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log("HEREEEE");
-                        return [4 /*yield*/, (0, RampUpAPI_1.fetchRepositoryStars)(this.owner, this.repo)];
+                    case 0: return [4 /*yield*/, (0, RampUpAPI_1.fetchRepositoryStars)(this.owner, this.repo)];
                     case 1:
                         stars = _a.sent();
                         return [4 /*yield*/, (0, RampUpAPI_1.fetchRepositoryForks)(this.owner, this.repo)];
                     case 2:
                         forks = _a.sent();
-                        power = this.calculateLowestPowerOf10(stars, forks);
-                        githubScore = (stars + forks) / power;
-                        eslintScore = 0;
+                        stars_count = stars.length;
+                        forks_count = forks.length;
+                        power = this.calculateLowestPowerOf10(stars_count, forks_count);
+                        githubScore = (stars_count + forks_count) / power;
+                        return [4 /*yield*/, this.LinterandTestChecker()];
+                    case 3:
+                        eslintScore = _a.sent();
                         finalScore = (0.2 * githubScore) + (0.8 * eslintScore);
                         if (finalScore > 1) {
                             return [2 /*return*/, 1];
@@ -131,7 +132,7 @@ var correctness = /** @class */ (function () {
                         var result = results_1[_i];
                         for (var _a = 0, _b = result.messages; _a < _b.length; _a++) {
                             var message = _b[_a];
-                            //console.log(`Message: ${message.severity}, ${message.ruleId}`);
+                            //////console.log(`Message: ${message.severity}, ${message.ruleId}`);
                             numFiles = numFiles + 1;
                             if (message.severity === 2) {
                                 _this.errors = _this.errors + 1;
@@ -147,11 +148,11 @@ var correctness = /** @class */ (function () {
                 });
             }
         }
-        console.log("Errors: ".concat(this.errors, ", Warnings: ").concat(this.warnings, ", Security Issues: ").concat(this.securityIssues, ", NumFiles: ").concat(numFiles));
+        ////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
     };
     correctness.prototype.LinterandTestChecker = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var tempdir, githuburl, hasTest, test_suite_checker, linter, error_prop, warning_prop, security_prop, eslintScore;
+            var tempdir, githuburl, hasTest, test_suite_checker, eslintScore;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -166,9 +167,10 @@ var correctness = /** @class */ (function () {
                         if (hasTest) {
                             test_suite_checker = 1;
                         }
-                        linter = new eslint_1.ESLint();
-                        this.lintFiles(tempdir, linter);
-                        //console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
+                        //////console.log(`Has test suite: ${test_suite_checker}`)        
+                        /*  const linter = new ESLint();
+                         this.lintFiles(tempdir, linter); */
+                        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
                         /* const results = linter.lintFiles(
                             files.filter((file) => /\.(js|ts)$/.test(file))
                         );
@@ -189,7 +191,10 @@ var correctness = /** @class */ (function () {
                         } */
                         return [4 /*yield*/, (0, child_process_1.exec)("rm -rf ".concat(tempdir))];
                     case 1:
-                        //console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
+                        //////console.log(`Has test suite: ${test_suite_checker}`)        
+                        /*  const linter = new ESLint();
+                         this.lintFiles(tempdir, linter); */
+                        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
                         /* const results = linter.lintFiles(
                             files.filter((file) => /\.(js|ts)$/.test(file))
                         );
@@ -209,10 +214,7 @@ var correctness = /** @class */ (function () {
                             }
                         } */
                         _a.sent();
-                        error_prop = this.errors / (this.errors + this.warnings + this.securityIssues + 1);
-                        warning_prop = this.warnings / (this.errors + this.warnings + this.securityIssues + 1);
-                        security_prop = this.securityIssues / (this.errors + this.warnings + this.securityIssues + 1);
-                        eslintScore = (0.6 * (1 - (error_prop * 0.5) + (warning_prop * 0.3) + (security_prop * 0.2))) + (test_suite_checker * 0.4);
+                        eslintScore = (test_suite_checker);
                         return [2 /*return*/, eslintScore];
                 }
             });

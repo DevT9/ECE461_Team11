@@ -62,7 +62,7 @@ var getAllRepoBranches = function (owner, repo) { return __awaiter(void 0, void 
                 return [2 /*return*/, parseBranchData(response)];
             case 2:
                 error_1 = _a.sent();
-                console.log('Error!!!:', error_1);
+                //console.log('Error!!!:', error);
                 return [2 /*return*/, null];
             case 3: return [2 /*return*/];
         }
@@ -71,7 +71,7 @@ var getAllRepoBranches = function (owner, repo) { return __awaiter(void 0, void 
 exports.getAllRepoBranches = getAllRepoBranches;
 // export const getAllCollaborators = async (req: Request, res: Response) => {
 //   const { owner, repo } = req.query;
-//   console.log('owner:', owner, 'repo:', repo);
+//   //console.log('owner:', owner, 'repo:', repo);
 //   if (typeof owner !== 'string' || typeof repo !== 'string') {
 //     return res.status(400).json({ error: 'Owner and repo name required!' });
 //   }
@@ -83,7 +83,7 @@ exports.getAllRepoBranches = getAllRepoBranches;
 //       return res.status(400).json({ error: 'Error getting collaborators' });
 //     }
 //   } catch (error: any) {
-//     console.log('Error:', error);
+//     //console.log('Error:', error);
 //     return res.status(400).json({ error: 'Error getting collabs!!' });
 //   }
 // };
@@ -92,9 +92,7 @@ var getAllRepoCommits = function (owner, repo) { return __awaiter(void 0, void 0
     var _a, _b;
     return __generator(this, function (_c) {
         switch (_c.label) {
-            case 0:
-                console.log("COMMITS");
-                return [4 /*yield*/, (0, exports.getAllRepoBranches)(owner, repo)];
+            case 0: return [4 /*yield*/, (0, exports.getAllRepoBranches)(owner, repo)];
             case 1:
                 branches = _c.sent();
                 if (!branches) {
@@ -112,7 +110,6 @@ var getAllRepoCommits = function (owner, repo) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, axios_1["default"].get(branchUrl.url)];
             case 4:
                 response = _c.sent();
-                console.log('RESPONSE!!', response);
                 author = (_b = (_a = response.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.login;
                 if (author) {
                     commitCounts.set(author, (commitCounts.get(author) || 0) + 1);
@@ -120,7 +117,6 @@ var getAllRepoCommits = function (owner, repo) { return __awaiter(void 0, void 0
                 return [3 /*break*/, 6];
             case 5:
                 error_2 = _c.sent();
-                console.error("error with this url: ".concat(branchUrl.url, "!!!!"), error_2);
                 return [3 /*break*/, 6];
             case 6:
                 _i++;
@@ -146,9 +142,7 @@ var getAllPullRequests = function (owner, repo) { return __awaiter(void 0, void 
     var response, pullRequests, contributors;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log("PRS");
-                return [4 /*yield*/, (0, api_utils_1.getRequest)("/repos/".concat(owner, "/").concat(repo, "/pulls?state=closed"))];
+            case 0: return [4 /*yield*/, (0, api_utils_1.getRequest)("/repos/".concat(owner, "/").concat(repo, "/pulls?state=closed"))];
             case 1:
                 response = _a.sent();
                 pullRequests = response || [];
@@ -166,9 +160,7 @@ var getAllClosedIssues = function (owner, repo) { return __awaiter(void 0, void 
     var response, issues, contributors;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log("CLOSED ISSUES");
-                return [4 /*yield*/, (0, api_utils_1.getRequest)("/repos/".concat(owner, "/").concat(repo, "/issues?state=closed"))];
+            case 0: return [4 /*yield*/, (0, api_utils_1.getRequest)("/repos/".concat(owner, "/").concat(repo, "/issues?state=closed"))];
             case 1:
                 response = _a.sent();
                 issues = response || [];
@@ -187,13 +179,11 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                console.log("HELLOOOO");
                 allContributors = new Map();
-                console.log("CALCULATING BUS FACTOR");
                 return [4 /*yield*/, (0, exports.getAllRepoCommits)(owner, repo)];
             case 1:
                 commitContributors = _b.sent();
-                console.log('Commit Contributors', commitContributors);
+                //console.log('Commit Contributors', commitContributors);
                 commitContributors === null || commitContributors === void 0 ? void 0 : commitContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -205,7 +195,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                 return [4 /*yield*/, (0, exports.getAllPullRequests)(owner, repo)];
             case 2:
                 prContributors = _b.sent();
-                console.log('PR contributors', prContributors);
+                //console.log('PR contributors', prContributors);
                 prContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -217,7 +207,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                 return [4 /*yield*/, (0, exports.getAllClosedIssues)(owner, repo)];
             case 3:
                 issueContributors = _b.sent();
-                console.log('Issue contributors', issueContributors);
+                //console.log('Issue contributors', issueContributors);
                 issueContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -254,7 +244,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                     var author = _a[0], contributions = _a[1];
                     return (__assign({ author: author }, contributions));
                 });
-                console.log("BUS FACTOR", busFactor);
+                //console.log("BUS FACTOR", busFactor);
                 return [2 /*return*/, busFactor];
         }
     });
