@@ -132,7 +132,7 @@ var correctness = /** @class */ (function () {
                         var result = results_1[_i];
                         for (var _a = 0, _b = result.messages; _a < _b.length; _a++) {
                             var message = _b[_a];
-                            //////console.log(`Message: ${message.severity}, ${message.ruleId}`);
+                            ////////console.log(`Message: ${message.severity}, ${message.ruleId}`);
                             numFiles = numFiles + 1;
                             if (message.severity === 2) {
                                 _this.errors = _this.errors + 1;
@@ -148,7 +148,7 @@ var correctness = /** @class */ (function () {
                 });
             }
         }
-        ////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
+        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
     };
     correctness.prototype.LinterandTestChecker = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -167,10 +167,10 @@ var correctness = /** @class */ (function () {
                         if (hasTest) {
                             test_suite_checker = 1;
                         }
-                        //////console.log(`Has test suite: ${test_suite_checker}`)        
+                        ////////console.log(`Has test suite: ${test_suite_checker}`)        
                         /*  const linter = new ESLint();
                          this.lintFiles(tempdir, linter); */
-                        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
+                        ////////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
                         /* const results = linter.lintFiles(
                             files.filter((file) => /\.(js|ts)$/.test(file))
                         );
@@ -191,10 +191,10 @@ var correctness = /** @class */ (function () {
                         } */
                         return [4 /*yield*/, (0, child_process_1.exec)("rm -rf ".concat(tempdir))];
                     case 1:
-                        //////console.log(`Has test suite: ${test_suite_checker}`)        
+                        ////////console.log(`Has test suite: ${test_suite_checker}`)        
                         /*  const linter = new ESLint();
                          this.lintFiles(tempdir, linter); */
-                        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
+                        ////////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
                         /* const results = linter.lintFiles(
                             files.filter((file) => /\.(js|ts)$/.test(file))
                         );

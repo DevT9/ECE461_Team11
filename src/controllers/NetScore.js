@@ -90,7 +90,7 @@ var NET_SCORE = /** @class */ (function () {
                         license = new License_1.License('someSharedProperty', this.owner, this.repo);
                         LICENSE_SCORE = license.calculateMetric();
                         NET_SCORE = (CORRECTNESS_SCORE * 0.25 + BUS_FACTOR_SCORE * 0.15 + RAMP_UP_SCORE * 0.25 + RESPONSIVE_MAINTAINER_SCORE * 0.3 + LICENSE_SCORE * 0.05);
-                        //console.log("NET_SCORE", NET_SCORE);
+                        ////console.log("NET_SCORE", NET_SCORE);
                         return [2 /*return*/, { NET_SCORE: NET_SCORE, RAMP_UP_SCORE: RAMP_UP_SCORE, CORRECTNESS_SCORE: CORRECTNESS_SCORE, BUS_FACTOR_SCORE: BUS_FACTOR_SCORE, RESPONSIVE_MAINTAINER_SCORE: RESPONSIVE_MAINTAINER_SCORE, LICENSE_SCORE: LICENSE_SCORE }];
                 }
             });

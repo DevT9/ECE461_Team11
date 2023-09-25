@@ -62,7 +62,7 @@ var getRequest = function (endpoint, params) { return __awaiter(void 0, void 0, 
                 return [2 /*return*/, response.data];
             case 3:
                 error_1 = _a.sent();
-                console.error('Error making GET request:', error_1);
+                //console.error('Error making GET request:', error_1);
                 throw error_1;
             case 4: return [2 /*return*/];
         }

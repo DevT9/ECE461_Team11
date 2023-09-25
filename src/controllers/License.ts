@@ -27,7 +27,7 @@ export class License extends MetricParent {
 
       return Promise.resolve('Fetched license data from README successfully');
     } catch (error) {
-      console.error('Error fetching README data:', error);
+      //console.error('Error fetching README data:', error);
       return Promise.reject(error);
     }
   }

@@ -62,7 +62,7 @@ var getAllRepoBranches = function (owner, repo) { return __awaiter(void 0, void 
                 return [2 /*return*/, parseBranchData(response)];
             case 2:
                 error_1 = _a.sent();
-                //console.log('Error!!!:', error);
+                ////console.log('Error!!!:', error);
                 return [2 /*return*/, null];
             case 3: return [2 /*return*/];
         }
@@ -71,7 +71,7 @@ var getAllRepoBranches = function (owner, repo) { return __awaiter(void 0, void 
 exports.getAllRepoBranches = getAllRepoBranches;
 // export const getAllCollaborators = async (req: Request, res: Response) => {
 //   const { owner, repo } = req.query;
-//   //console.log('owner:', owner, 'repo:', repo);
+//   ////console.log('owner:', owner, 'repo:', repo);
 //   if (typeof owner !== 'string' || typeof repo !== 'string') {
 //     return res.status(400).json({ error: 'Owner and repo name required!' });
 //   }
@@ -83,7 +83,7 @@ exports.getAllRepoBranches = getAllRepoBranches;
 //       return res.status(400).json({ error: 'Error getting collaborators' });
 //     }
 //   } catch (error: any) {
-//     //console.log('Error:', error);
+//     ////console.log('Error:', error);
 //     return res.status(400).json({ error: 'Error getting collabs!!' });
 //   }
 // };
@@ -183,7 +183,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                 return [4 /*yield*/, (0, exports.getAllRepoCommits)(owner, repo)];
             case 1:
                 commitContributors = _b.sent();
-                //console.log('Commit Contributors', commitContributors);
+                ////console.log('Commit Contributors', commitContributors);
                 commitContributors === null || commitContributors === void 0 ? void 0 : commitContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -195,7 +195,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                 return [4 /*yield*/, (0, exports.getAllPullRequests)(owner, repo)];
             case 2:
                 prContributors = _b.sent();
-                //console.log('PR contributors', prContributors);
+                ////console.log('PR contributors', prContributors);
                 prContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -207,7 +207,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                 return [4 /*yield*/, (0, exports.getAllClosedIssues)(owner, repo)];
             case 3:
                 issueContributors = _b.sent();
-                //console.log('Issue contributors', issueContributors);
+                ////console.log('Issue contributors', issueContributors);
                 issueContributors.forEach(function (count, author) {
                     var current = allContributors.get(author) || {
                         commits: 0,
@@ -244,7 +244,7 @@ var calculateBusFactor = function (owner, repo) { return __awaiter(void 0, void 
                     var author = _a[0], contributions = _a[1];
                     return (__assign({ author: author }, contributions));
                 });
-                //console.log("BUS FACTOR", busFactor);
+                ////console.log("BUS FACTOR", busFactor);
                 return [2 /*return*/, busFactor];
         }
     });

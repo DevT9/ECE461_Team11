@@ -104,7 +104,7 @@ var Responsiveness = /** @class */ (function (_super) {
                         return [2 /*return*/, Promise.resolve('Fetched and processed data for Responsive Maintainer')];
                     case 4:
                         error_1 = _a.sent();
-                        console.error('Error fetching data:', error_1);
+                        //console.error('Error fetching data:', error_1);
                         return [2 /*return*/, Promise.reject(error_1)];
                     case 5: return [2 /*return*/];
                 }

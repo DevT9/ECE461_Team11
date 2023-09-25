@@ -14,7 +14,7 @@ export const fetchLicense = async (repoOwner: string, repoName: string) => {
       throw new Error('Failed to fetch license data');
     }
   } catch (error) {
-    console.error('Error fetching license data:', error);
+    //console.error('Error fetching license data:', error);
     throw error;
   }
 };

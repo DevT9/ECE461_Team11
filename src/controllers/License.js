@@ -85,7 +85,7 @@ var License = /** @class */ (function (_super) {
                         return [2 /*return*/, Promise.resolve('Fetched license data from README successfully')];
                     case 3:
                         error_1 = _a.sent();
-                        console.error('Error fetching README data:', error_1);
+                        //console.error('Error fetching README data:', error_1);
                         return [2 /*return*/, Promise.reject(error_1)];
                     case 4: return [2 /*return*/];
                 }

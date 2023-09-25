@@ -22,7 +22,7 @@ const getRequest = async (endpoint, params) => {
         return response.data;
     }
     catch (error) {
-        console.error('Error making GET request:', error);
+        //console.error('Error making GET request:', error);
         throw error;
     }
 };

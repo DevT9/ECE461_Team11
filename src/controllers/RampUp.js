@@ -68,23 +68,23 @@ var calculateRampUp = function (owner, repo) { return __awaiter(void 0, void 0, 
                 forksContribution = weights.Forks * forks.length;
                 rampUpScore = (contributorsContribution + starsContribution + forksContribution) *
                     (weights.Contributors + weights.Stars + weights.Forks);
-                //console.log('Ramp-Up Score:', rampUpScore);
+                ////console.log('Ramp-Up Score:', rampUpScore);
                 if (firstCommitTime) {
                     currentTime = new Date().getTime();
                     firstCommitTimestamp = new Date(firstCommitTime).getTime();
                     timeDifference = currentTime - firstCommitTimestamp;
                     maxTimeDifference = 365 * 24 * 60 * 60 * 1000;
                     normalizedTimeDifference = Math.min(timeDifference / maxTimeDifference, 1);
-                    //console.log('First Commit:', normalizedTimeDifference);
+                    ////console.log('First Commit:', normalizedTimeDifference);
                     rampUpScore += weights.FirstCommit * normalizedTimeDifference;
                 }
-                /* console.log('Ramp-Up Score:', rampUpScore);
+                /* //console.log('Ramp-Up Score:', rampUpScore);
                 res.json({ rampUpScore }); */
                 rampUpScore = Math.min(Math.max(rampUpScore, 0), 1);
                 return [2 /*return*/, rampUpScore];
             case 5:
                 error_1 = _a.sent();
-                console.error('Error:', error_1);
+                //console.error('Error:', error_1);
                 return [2 /*return*/, 0];
             case 6: return [2 /*return*/];
         }

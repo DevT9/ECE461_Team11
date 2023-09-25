@@ -53,7 +53,7 @@ var NetScore_1 = require("./src/controllers/NetScore");
 var ndjson = require('ndjson');
 var PackageClassifier = /** @class */ (function () {
     function PackageClassifier(file) {
-        //console.log("HELOOOO");
+        ////console.log("HELOOOO");
         if (!(0, fs_1.existsSync)(file)) {
             throw new Error('ERORR!!');
         }
@@ -63,7 +63,7 @@ var PackageClassifier = /** @class */ (function () {
         return this.urls;
     };
     PackageClassifier.prototype.classifyUrls = function () {
-        //console.log("CLASSIFY URLS CALLED!");
+        ////console.log("CLASSIFY URLS CALLED!");
         var gitUrls = [];
         var npmPackageUrls = [];
         for (var _i = 0, _a = this.urls; _i < _a.length; _i++) {
@@ -94,7 +94,7 @@ var PackageClassifier = /** @class */ (function () {
             }
         }
         var x = { gitUrls: gitUrls, npmPackageUrls: npmPackageUrls };
-        //console.log("X", x);
+        ////console.log("X", x);
         return x;
     };
     PackageClassifier.prototype.getNpmPackageRepoUrl = function (packageName) {
@@ -105,7 +105,7 @@ var PackageClassifier = /** @class */ (function () {
             return output.trim();
         }
         catch (error) {
-            console.error("Error getting repository URL for package ".concat(packageName, ": ").concat(error.message));
+            //console.error("Error getting repository URL for package ".concat(packageName, ": ").concat(error.message));
             return null;
         }
     };
@@ -119,9 +119,9 @@ function main() {
                 case 0:
                     _c.trys.push([0, 5, , 6]);
                     filename = process.argv[2];
-                    //console.log("FILENAME!!!", filename);
+                    ////console.log("FILENAME!!!", filename);
                     if (!filename) {
-                        console.error("No filename provided.");
+                        //console.error("No filename provided.");
                         process.exit(1);
                     }
                     classifier = new PackageClassifier(filename);
@@ -146,11 +146,11 @@ function main() {
                     URL_1 = urls[i];
                     score_results_with_url = __assign({ URL: URL_1 }, scoreResults);
                     i++;
-                    /*           console.log("SCORE RESULTS", scoreResults); */
+                    /*           //console.log("SCORE RESULTS", scoreResults); */
                     results.push(scoreResults);
-                    /*           console.log("RESULTS", results); */
+                    /*           //console.log("RESULTS", results); */
                     //process.stdout.write(ndjson.stringify(scoreResults));
-                    console.log(JSON.stringify(score_results_with_url));
+                    //console.log(JSON.stringify(score_results_with_url));
                     _c.label = 3;
                 case 3:
                     _i++;
@@ -158,7 +158,7 @@ function main() {
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     error_1 = _c.sent();
-                    console.error('An error occurred:', error_1);
+                    //console.error('An error occurred:', error_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

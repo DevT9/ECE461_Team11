@@ -26,15 +26,15 @@ export const calculateRampUp = async (
     const contributorsContribution = weights.Contributors * contributors.length;
     const starsContribution = weights.Stars * stars.length;
     const forksContribution = weights.Forks * forks.length;
-    //console.log('Contributors:', contributorsContribution);
-    //console.log('Stars:', starsContribution);
-    //console.log('Forks:', forksContribution);
+    ////console.log('Contributors:', contributorsContribution);
+    ////console.log('Stars:', starsContribution);
+    ////console.log('Forks:', forksContribution);
 
     // Calculate the ramp-up score
     let rampUpScore =
       (contributorsContribution + starsContribution + forksContribution) *
       (weights.Contributors + weights.Stars + weights.Forks);
-      //console.log('Ramp-Up Score:', rampUpScore);
+      ////console.log('Ramp-Up Score:', rampUpScore);
 
     if (firstCommitTime) {
       // Calculate the time difference for the first commit in milliseconds
@@ -48,16 +48,16 @@ export const calculateRampUp = async (
         timeDifference / maxTimeDifference,
         1
       );
-      //console.log('First Commit:', normalizedTimeDifference);
+      ////console.log('First Commit:', normalizedTimeDifference);
       rampUpScore += weights.FirstCommit * normalizedTimeDifference;
     }
 
-    /* console.log('Ramp-Up Score:', rampUpScore);
+    /* //console.log('Ramp-Up Score:', rampUpScore);
     res.json({ rampUpScore }); */
     rampUpScore = Math.min(Math.max(rampUpScore, 0), 1);
     return rampUpScore;
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
     return 0;
     /* res.status(500).send('Internal Server Error'); */
   }

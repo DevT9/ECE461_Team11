@@ -7,7 +7,7 @@ import { Router } from 'express';
 import { calculateRampUp } from '../controllers/RampUp';
 
 const router = Router();
-// console.log('router:', router);
+// //console.log('router:', router);
 
 // router.get('/busfactor', calculateBusFactor);
 router.get('/rampup', calculateRampUp);

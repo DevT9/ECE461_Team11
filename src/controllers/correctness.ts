@@ -24,7 +24,7 @@ export class correctness {
     }
 
     async check(): Promise<number> {
-        ////console.log("HEREEEE");
+        //////console.log("HEREEEE");
         // Get the repository information using the GitHub API
         /* try {
             const response = await this.octokit.repos.get({
@@ -33,7 +33,7 @@ export class correctness {
             });
         }
         catch (error: any) {
-            //////console.log(error);
+            ////////console.log(error);
             return 0;
         } 
         const { data: repoData } = await this.octokit.repos.get({
@@ -44,7 +44,7 @@ export class correctness {
         const forks = await fetchRepositoryForks(this.owner, this.repo);
         const stars_count = stars.length;
         const forks_count = forks.length;
-        /* //console.log(`Stars: ${stars}, Forks: ${forks}`); */
+        /* ////console.log(`Stars: ${stars}, Forks: ${forks}`); */
         // Calculate a score based on the number of stars, forks, and watchers
         const power = this.calculateLowestPowerOf10(stars_count, forks_count);
         const githubScore = (stars_count + forks_count) / power;
@@ -52,9 +52,9 @@ export class correctness {
         // try {
         //     eslintScore = await this.LinterandTestChecker();
         // } catch(e) {
-        //     ////console.log("Error!", e);
+        //     //////console.log("Error!", e);
         // }
-        //console.log(`Github Score: ${githubScore}, Eslint Score: ${eslintScore}`);
+        ////console.log(`Github Score: ${githubScore}, Eslint Score: ${eslintScore}`);
         const finalScore = (0.2 * githubScore) + (0.8 * eslintScore);
         if (finalScore > 1) {
             return 1;
@@ -110,7 +110,7 @@ export class correctness {
                 linter.lintFiles([filePath]).then((results) => {
                     for (const result of results) {
                         for (const message of result.messages) {
-                            //////console.log(`Message: ${message.severity}, ${message.ruleId}`);
+                            ////////console.log(`Message: ${message.severity}, ${message.ruleId}`);
                             numFiles = numFiles + 1;
                             if (message.severity === 2) {
                                 this.errors = this.errors + 1;
@@ -125,7 +125,7 @@ export class correctness {
                 });
             }
         }
-        ////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
+        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
     }
 
     private async LinterandTestChecker(): Promise<number> {
@@ -141,10 +141,10 @@ export class correctness {
         if (hasTest) {
             test_suite_checker = 1;
         }
-        //////console.log(`Has test suite: ${test_suite_checker}`)        
+        ////////console.log(`Has test suite: ${test_suite_checker}`)        
        /*  const linter = new ESLint();
         this.lintFiles(tempdir, linter); */
-        //////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
+        ////////console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}`);
         /* const results = linter.lintFiles(
             files.filter((file) => /\.(js|ts)$/.test(file))
         );

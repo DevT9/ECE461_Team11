@@ -61,7 +61,7 @@ export class Responsiveness extends MetricParent {
         'Fetched and processed data for Responsive Maintainer'
       );
     } catch (error) {
-      console.error('Error fetching data:', error);
+      //console.error('Error fetching data:', error);
       return Promise.reject(error);
     }
   }

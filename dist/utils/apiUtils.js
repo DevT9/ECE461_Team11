@@ -12,7 +12,7 @@ const getRepoCommits = async (owner, repo) => {
         return response.data;
     }
     catch (error) {
-        console.error('Error fetching repo commits:', error);
+        //console.error('Error fetching repo commits:', error);
         throw error;
     }
 };

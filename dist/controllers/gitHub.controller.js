@@ -12,7 +12,7 @@ const getAllRepoBranches = async (req, res, owner, repo) => {
         return parseBranchData(response);
     }
     catch (error) {
-        console.log('Error:', error);
+        //console.log('Error:', error);
         return null;
     }
 };
@@ -27,18 +27,18 @@ const getAllRepoCommits = async (req, res) => {
     if (!branches) {
         return res.status(400).json({ error: 'Error getting branches' });
     }
-    // console.log('branches:', branches);
+    // //console.log('branches:', branches);
     let parsedData = [];
     for (let branchUrl of branches) {
         try {
             const response = await axios_1.default.get(branchUrl);
-            // console.log("Response:", response.data);
+            // //console.log("Response:", response.data);
             if (response.data) {
                 parsedData.push((_c = (_b = (_a = response.data) === null || _a === void 0 ? void 0 : _a.commit) === null || _b === void 0 ? void 0 : _b.author) === null || _c === void 0 ? void 0 : _c.name);
             }
         }
         catch (error) {
-            console.error(`error with this url: ${branchUrl}!!!!`, error);
+            //console.error(`error with this url: ${branchUrl}!!!!`, error);
         }
     }
     return res.status(200).json({ message: 'Success!!!', parsedData });
