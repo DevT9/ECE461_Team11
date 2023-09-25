@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 # Read environment variables or set default values
 LOG_LEVEL=${LOG_LEVEL:-1}

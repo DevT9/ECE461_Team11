@@ -1,0 +1,20 @@
+2023-09-24 20:05:45,528 - INFO - Starting the installation process.
+2023-09-24 20:05:48,766 - INFO - Dependencies installed successfully.
+2023-09-24 20:06:06,078 - INFO - 5/20 test cases passed. 34.01(117/344)% line coverage achieved.
+2023-09-24 20:06:06,104 - INFO - Failed test suites:
+2023-09-24 20:06:06,132 - INFO - __test__/BusFactor.test.ts
+2023-09-24 20:06:06,159 - INFO - __test__/Responsiveness.test.ts
+2023-09-24 20:06:06,185 - INFO - __test__/NetScore.test.ts
+2023-09-24 20:06:06,210 - INFO - __test__/RampUp.test.ts
+2023-09-24 20:06:06,232 - INFO - __test__/correctness.test.ts
+2023-09-24 20:06:06,254 - INFO - __test__/License.test.ts
+2023-09-24 20:06:30,967 - INFO - Running: teest.
+2023-09-24 20:06:30,994 - INFO - tsc failed
+2023-09-24 20:06:44,168 - INFO - 5/20 test cases passed. 34.01(117/344)% line coverage achieved.
+2023-09-24 20:06:44,192 - INFO - Failed test suites:
+2023-09-24 20:06:44,211 - INFO - __test__/BusFactor.test.ts
+2023-09-24 20:06:44,231 - INFO - __test__/Responsiveness.test.ts
+2023-09-24 20:06:44,251 - INFO - __test__/NetScore.test.ts
+2023-09-24 20:06:44,271 - INFO - __test__/License.test.ts
+2023-09-24 20:06:44,291 - INFO - __test__/correctness.test.ts
+2023-09-24 20:06:44,311 - INFO - __test__/RampUp.test.ts
