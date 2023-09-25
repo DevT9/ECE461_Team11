@@ -24,6 +24,7 @@ export class correctness {
     }
 
     async check(): Promise<number> {
+        console.log("HEREEEE");
         // Get the repository information using the GitHub API
         /* try {
             const response = await this.octokit.repos.get({
@@ -45,7 +46,12 @@ export class correctness {
         // Calculate a score based on the number of stars, forks, and watchers
         const power = this.calculateLowestPowerOf10(stars, forks);
         const githubScore = (stars + forks) / power;
-        const eslintScore = await this.LinterandTestChecker();
+        let eslintScore = 0;
+        // try {
+        //     eslintScore = await this.LinterandTestChecker();
+        // } catch(e) {
+        //     console.log("Error!", e);
+        // }
         const finalScore = (0.2 * githubScore) + (0.8 * eslintScore);
         if (finalScore > 1) {
             return 1;
@@ -116,7 +122,7 @@ export class correctness {
                 });
             }
         }
-        //console.log(`Errors: ${errors}, Warnings: ${warnings}, Security Issues: ${securityIssues}, NumFiles: ${numFiles}`);
+        console.log(`Errors: ${this.errors}, Warnings: ${this.warnings}, Security Issues: ${this.securityIssues}, NumFiles: ${numFiles}`);
     }
 
     private async LinterandTestChecker(): Promise<number> {

@@ -1,12 +1,12 @@
 import { readFileSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
 import { NetScore } from './src/controllers/NetScore';
-import ndjson from 'ndjson';
+const ndjson = require('ndjson');
 
 class PackageClassifier {
   urls: string[];
-
   constructor(file: string) {
+    console.log("HELOOOO");
     if (!existsSync(file)) {
       throw new Error('ERORR!!');
     }
@@ -14,6 +14,7 @@ class PackageClassifier {
   }
 
   classifyUrls(): { gitUrls: string[]; npmPackageUrls: string[] } {
+    console.log("CLASSIFY URLS CALLED!");
     const gitUrls: string[] = [];
     const npmPackageUrls: string[] = [];
 
@@ -66,6 +67,7 @@ class PackageClassifier {
 async function main() {
     try {
       const filename = process.argv[2];
+      console.log("FILENAME!!!", filename);
       if (!filename) {
         console.error("No filename provided.");
         process.exit(1);
@@ -83,6 +85,7 @@ async function main() {
           const owner = temp[1];
           let repo = temp[2];
           repo = repo.replace(/\.git$/, '');
+          console.log("URL", url);
           const NScore = new NetScore(owner, repo);
           const scoreResults = await NScore.calculate();
           results.push(scoreResults);
