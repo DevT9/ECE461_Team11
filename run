@@ -62,6 +62,7 @@ case "$1" in
     
         exit $EXIT_CODE
         ;;
+
     *)
         log "Invalid command. Use 'install' or 'test' or 'run'"
         exit 1
