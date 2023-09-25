@@ -60,29 +60,21 @@ case "$1" in
             done <<< "$FAILED_TESTS"
         fi
     
-        exit $EXIT_CODE
+    exit $EXIT_CODE
         ;;
-
     *)
-        log "Invalid command. Use 'install' or 'test' or 'run'"
-        exit 1
-        ;;
-    "run")
-        FILENAME="$2"
-        if [ -z "$FILENAME" ]; then
-            log "Filename not provided"
+        if [ -z "$1" ]; then
+            log "Command or filename not provided"
             exit 1
         fi
 
+        FILENAME="$1"
+
         log "Running: $FILENAME."
         tsc run.ts || { log "tsc failed"; exit 1; }
-        node run.js "$2" || { log "node run.js failed"; exit 1; }
+        node run.js "$FILENAME" || { log "node run.js failed"; exit 1; }
 
         log "SUCCESS!!: $FILENAME."
         exit 0
-        ;;
-    *)
-        log "Invalid command. Use 'install' or 'test' or 'run'"
-        exit 1
         ;;
 esac
