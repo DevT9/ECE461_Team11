@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { BASE_URL_GITHUB } from '../helpers/constants';
+import { newToken } from '../index';
 
 export const getRequest = async (endpoint: string, params?: any) => {
-  const url = `${BASE_URL_GITHUB}${endpoint}`;
-  const token = process.env.GITHUB_ACCESS_TOKEN;
+  //console.log(newToken);
+  const url = `https://api.github.com${endpoint}`;
+  const token = newToken;
   if (!token) {
     throw new Error('No bearer token found');
   }
@@ -16,7 +17,7 @@ export const getRequest = async (endpoint: string, params?: any) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error making GET request:', error);
+    //console.error('Error making GET request:', error);
     throw error;
   }
 };

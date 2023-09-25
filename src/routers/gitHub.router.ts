@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { getAllRepoCommits } from '../controllers/gitHub.controller';
+// import {
+//   getAllRepoCommits,
+//   getAllCollaborators,
+//   calculateBusFactor
+// } from '../controllers/BusFactor';
+import { calculateRampUp } from '../controllers/RampUp';
 
 const router = Router();
-// console.log('router:', router);
+// //console.log('router:', router);
 
-router.get('/commits', getAllRepoCommits);
+// router.get('/busfactor', calculateBusFactor);
+router.get('/rampup', calculateRampUp);
 
 export default router;
