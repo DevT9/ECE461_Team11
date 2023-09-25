@@ -2,7 +2,6 @@ import axios from 'axios';
 import { newToken } from '../index';
 
 export const getRequest = async (endpoint: string, params?: any) => {
-  console.log(newToken);
   const url = `https://api.github.com${endpoint}`;
   const token = newToken;
   if (!token) {
