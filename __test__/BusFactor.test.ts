@@ -13,7 +13,12 @@ jest.mock('../src/controllers/BusFactor.ts', () => ({
 
 describe('calculateBusFactor', () => {
   it('calculates the bus factor correctly', async () => {
-    const mockResponse: any = {
+    interface MockResponse {
+      json: jest.Mock;
+      status: jest.Mock;
+    }
+
+    const mockResponse: MockResponse = {
       json: jest.fn(),
       status: jest.fn(() => mockResponse)
     };
@@ -34,7 +39,12 @@ describe('calculateBusFactor', () => {
   });
 
   it('HANDLING ERRoRS', async () => {
-    const mockResponse: any = {
+    interface MockResponse {
+      json: jest.Mock;
+      status: jest.Mock;
+    }
+
+    const mockResponse: MockResponse = {
       json: jest.fn(),
       status: jest.fn(() => mockResponse)
     };

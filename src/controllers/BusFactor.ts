@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+// import { Request, Response } from 'express';
 import { getRequest } from '../utils/api.utils';
 import axios from 'axios';
 
@@ -7,17 +7,14 @@ interface Branch {
   url: string;
 }
 
-export const getAllRepoBranches = async (
-  owner: string,
-  repo: string
-) => {
+export const getAllRepoBranches = async (owner: string, repo: string) => {
   try {
     const response = await getRequest(
       `/repos/${owner}/${repo}/branches?state=closed`
     );
     return parseBranchData(response);
-  } catch (error: any) {
-    ////console.log('Error!!!:', error);
+  } catch (error: unknown) {
+    //console.log('Error!!!:', error);
     return null;
   }
 };
@@ -45,15 +42,12 @@ export const getAllRepoCommits = async (
   owner: string,
   repo: string
 ): Promise<Map<string, number> | null> => {
-  ////console.log("COMMITS");
-  const branches = await getAllRepoBranches(
-    owner,
-    repo
-  );
+  //console.log("COMMITS");
+  const branches = await getAllRepoBranches(owner, repo);
   if (!branches) {
     return null;
   }
-    
+
   const commitCounts: Map<string, number> = new Map();
   for (const branchUrl of branches) {
     try {
@@ -63,16 +57,17 @@ export const getAllRepoCommits = async (
       if (author) {
         commitCounts.set(author, (commitCounts.get(author) || 0) + 1);
       }
-    } catch (error: any) {
-      ////console.error(`error with this url: ${branchUrl.url}!!!!`, error);
+      console.log('COMMIT COUNTS!!!', commitCounts)
+    } catch (error: unknown) {
+      console.error(`error with this url: ${branchUrl.url}!!!!`, error);
     }
   }
   return commitCounts;
 };
 
-const parseBranchData = (branches: any[]): Branch[] => {
+const parseBranchData = (branches: { name: string; commit: { url: string } }[]): Branch[] => {
   const branchDetails: Branch[] = [];
-  branches.forEach((item: any) => {
+  branches.forEach((item) => {
     const branchName = item?.name;
     const branchUrl = item?.commit?.url;
     if (branchName && branchUrl) {
@@ -82,18 +77,15 @@ const parseBranchData = (branches: any[]): Branch[] => {
   return branchDetails;
 };
 
-export const getAllPullRequests = async (
-  owner: string,
-  repo: string
-) => {
-  ////console.log("PRS");
+export const getAllPullRequests = async (owner: string, repo: string) => {
+  //console.log("PRS");
   const response = await getRequest(
     `/repos/${owner}/${repo}/pulls?state=closed`
   );
   const pullRequests = response || [];
   const contributors: Map<string, number> = new Map();
 
-  pullRequests.forEach((pr: any) => {
+  pullRequests.forEach((pr: { user: { login: string } }) => {
     const author = pr.user.login;
     contributors.set(author, (contributors.get(author) || 0) + 1);
   });
@@ -101,18 +93,15 @@ export const getAllPullRequests = async (
   return contributors;
 };
 
-export const getAllClosedIssues = async (
-  owner: string,
-  repo: string
-) => {
-  ////console.log("CLOSED ISSUES");
+export const getAllClosedIssues = async (owner: string, repo: string) => {
+  //console.log("CLOSED ISSUES");
   const response = await getRequest(
     `/repos/${owner}/${repo}/issues?state=closed`
   );
   const issues = response || [];
   const contributors: Map<string, number> = new Map();
 
-  issues.forEach((issue: any) => {
+  issues.forEach((issue: { user: { login: string } }) => {
     const author = issue.user.login;
     contributors.set(author, (contributors.get(author) || 0) + 1);
   });
@@ -161,15 +150,12 @@ export const calculateBusFactor = async (owner: string, repo: string) => {
   });
 
   let totalContributions = 0;
-  let totalContributors = 0;
 
   allContributors.forEach((contribution) => {
     totalContributions +=
       contribution.commits + contribution.prs + contribution.issues;
-    totalContributors++;
   });
 
-  let busFactor = 0;
   let runningTotal = 0;
 
   const sortedContributors = Array.from(allContributors.entries()).sort(
@@ -186,15 +172,15 @@ export const calculateBusFactor = async (owner: string, repo: string) => {
   for (const [, contributions] of sortedContributors) {
     runningTotal +=
       contributions.commits + contributions.prs + contributions.issues;
-    busFactor++;
+    // busFactor++;
     if (runningTotal / totalContributions > 0.5) {
       break;
     }
   }
 
-  const formattedContributors = sortedContributors.map(
-    ([author, contributions]) => ({ author, ...contributions })
-  );
-  ////console.log("BUS FACTOR", busFactor);
-  return busFactor;
+//   const formattedContributors = sortedContributors.map(
+//     ([author, contributions]) => ({ author, ...contributions })
+//   );
+//   //console.log("BUS FACTOR", busFactor);
+//   return busFactor;
 };

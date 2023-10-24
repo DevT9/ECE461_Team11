@@ -25,7 +25,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -46,7 +46,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculateBusFactor = exports.getAllClosedIssues = exports.getAllPullRequests = exports.getAllRepoCommits = exports.getAllRepoBranches = void 0;
 var api_utils_1 = require("../utils/api.utils");
 var axios_1 = require("axios");
@@ -107,13 +107,14 @@ var getAllRepoCommits = function (owner, repo) { return __awaiter(void 0, void 0
                 _c.label = 3;
             case 3:
                 _c.trys.push([3, 5, , 6]);
-                return [4 /*yield*/, axios_1["default"].get(branchUrl.url)];
+                return [4 /*yield*/, axios_1.default.get(branchUrl.url)];
             case 4:
                 response = _c.sent();
                 author = (_b = (_a = response.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.login;
                 if (author) {
                     commitCounts.set(author, (commitCounts.get(author) || 0) + 1);
                 }
+                console.log('COMMIT COUNTS!!!', commitCounts);
                 return [3 /*break*/, 6];
             case 5:
                 error_2 = _c.sent();
