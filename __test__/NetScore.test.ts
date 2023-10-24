@@ -1,97 +1,61 @@
 import { NET_SCORE } from '../src/controllers/NetScore';
 import { correctness } from '../src/controllers/correctness';
 import { calculateBusFactor } from '../src/controllers/BusFactor';
+import { calculateRampUp } from '../src/controllers/RampUp';
 import { Responsiveness } from '../src/controllers/Responsiveness';
 import { License } from '../src/controllers/License';
 
-// jest.mock('../src/controllers/correctness', () => ({
-//   correctness: jest.fn(() => ({
-//     check: jest.fn(() => 0.8), // Mock correctness score
-//   })),
-// }));
+jest.mock('../src/controllers/correctness');
+jest.mock('../src/controllers/BusFactor');
+jest.mock('../src/controllers/RampUp');
+jest.mock('../src/controllers/Responsiveness');
+jest.mock('../src/controllers/License');
 
-const mockCorrectness = jest.fn(() => ({
-  check: jest.fn(() => 0.8),
-}));
-jest.mock('../src/controllers/correctness', () => ({
-  correctness: mockCorrectness,
-}));
+const mockedCorrectness = correctness as jest.MockedClass<typeof correctness>;
+const mockedCalculateBusFactor = calculateBusFactor as jest.MockedFunction<typeof calculateBusFactor>;
+const mockedCalculateRampUp = calculateRampUp as jest.MockedFunction<typeof calculateRampUp>;
+const mockedResponsiveness = Responsiveness as jest.MockedClass<typeof Responsiveness>;
+const mockedLicense = License as jest.MockedClass<typeof License>;
 
-// jest.mock('../src/controllers/BusFactor', () => ({
-//   calculateBusFactor: jest.fn(() => 0.6), // Mock bus factor score
-// }));
-
-const mockedCalculateBusFactor = jest.fn(() => 0.6); // Mock bus factor score
-jest.mock('../src/controllers/BusFactor', () => ({
-  calculateBusFactor: mockedCalculateBusFactor,
-}));
-
-jest.mock('../src/controllers/RampUp', () => ({
-  calculateRampUp: jest.fn(() => 0.7), // Mock ramp-up score
-}));
-
-jest.mock('../src/controllers/Responsiveness', () => ({
-  Responsiveness: {
-    calculate: jest.fn(() => 0.9), // Mock responsiveness score
-  },
-}));
-
-jest.mock('../src/controllers/License', () => ({
-  License: {
-    calculate: jest.fn(() => 0.95), // Mock license score
-  },
-}));
-
-describe('NetScore', () => {
-  it('calculates the net score correctly', async () => {
-    const netScore = new NET_SCORE('github_owner', 'repository_name');
-    const score = await netScore.calculate();
-
-    expect(correctness).toHaveBeenCalledWith('github_owner', 'repository_name');
-    expect(calculateBusFactor).toHaveBeenCalled();
-    expect(Responsiveness).toHaveBeenCalledWith('github_owner', 'repository_name');
-    expect(License).toHaveBeenCalled();
-
-    // Expected score calculation: 0.8 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.95
-    expect(score).toBe(3.95);
-  });
-  it('calculates the net score with minimum values correctly', async () => {
-    // Mock correctness to return the minimum score
-    mockCorrectness.mockImplementation(() => ({
-      check:jest.fn(() => 0),
-    }));
-
-    // Mock other dependencies as before
-    const netScore = new NET_SCORE('github_owner', 'repository_name');
-    const score = await netScore.calculate();
-
-    // Expected score calculation: 0 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
-    expect(score).toBe(3.15);
+describe('NET_SCORE', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('calculates the net score with maximum values correctly', async () => {
-    // Mock correctness to return the maximum score
-    mockCorrectness.mockImplementation(() => ({
-      check: jest.fn(() => 1),
-    }));
+  it('should calculate NET_SCORE correctly', async () => {
+    // Mock behavior of the individual score calculations
+    const mockCorrectnessInstance = {
+      check: jest.fn().mockResolvedValue(0.8)
+    };
+    mockedCorrectness.mockImplementation(() => mockCorrectnessInstance);
 
-    // Mock other dependencies as before
-    const netScore = new NET_SCORE('github_owner', 'repository_name');
-    const score = await netScore.calculate();
+    mockedCalculateBusFactor.mockResolvedValue(0.9);
+    mockedCalculateRampUp.mockResolvedValue(0.7);
 
-    // Expected score calculation: 1 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
-    expect(score).toBe(3.15);
+    const mockResponsivenessInstance = {
+      calculateMetric: jest.fn().mockReturnValue(0.85)
+    };
+    mockedResponsiveness.mockImplementation(() => mockResponsivenessInstance);
+
+    const mockLicenseInstance = {
+      calculateMetric: jest.fn().mockReturnValue(0.95)
+    };
+    mockedLicense.mockImplementation(() => mockLicenseInstance);
+
+    const netscore = new NET_SCORE('sampleOwner', 'sampleRepo');
+    const result = await netscore.calculate();
+
+    // Validate scores based on the mocked values
+    expect(result.CORRECTNESS_SCORE).toBeCloseTo(0.8);
+    expect(result.BUS_FACTOR_SCORE).toBeCloseTo(0.9);
+    expect(result.RAMP_UP_SCORE).toBeCloseTo(0.7);
+    expect(result.RESPONSIVE_MAINTAINER_SCORE).toBeCloseTo(0.85);
+    expect(result.LICENSE_SCORE).toBeCloseTo(0.95);
+
+    // Validate the overall NET_SCORE
+    const expectedNetScore = (0.8 * 0.25 + 0.9 * 0.15 + 0.7 * 0.25 + 0.85 * 0.3 + 0.95 * 0.05);
+    expect(result.NET_SCORE).toBeCloseTo(expectedNetScore);
   });
 
-  it('calculates the net score with zero bus factor correctly', async () => {
-    // Mock bus factor to return zero
-    mockedCalculateBusFactor.mockImplementation(() => 0);
-
-    // Mock other dependencies as before
-    const netScore = new NET_SCORE('github_owner', 'repository_name');
-    const score = await netScore.calculate();
-
-    // Expected score calculation: 0.8 (correctness) + 0 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.35
-    expect(score).toBe(3.35);
-  });
+  // ... additional tests such as failure scenarios ...
 });

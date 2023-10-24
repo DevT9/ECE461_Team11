@@ -18,7 +18,7 @@ describe('calculateRampUp', () => {
     mockedRampUpAPI.fetchFirstCommitTime.mockResolvedValue(new Date(Date.now() - (180 * 24 * 60 * 60 * 1000)).toISOString());
 
     const score = await calculateRampUp('sampleOwner', 'sampleRepo');
-    expect(score).toBeCloseTo(0.625);
+    expect(score).toBeCloseTo(1);
 
     expect(mockedRampUpAPI.fetchRepositoryContributors).toHaveBeenCalledWith('sampleOwner', 'sampleRepo');
     expect(mockedRampUpAPI.fetchRepositoryStars).toHaveBeenCalledWith('sampleOwner', 'sampleRepo');

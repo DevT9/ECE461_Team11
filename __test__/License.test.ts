@@ -44,11 +44,11 @@ describe('License Class', () => {
   it('should handle empty API responses in fetchData', async () => {
     // Mock axios.get response
     mockedAxios.get.mockResolvedValueOnce({ data: null });
-
+  
     const license = new License('sharedProperty', repoOwner, repoName);
-    const fetchDataResult = await license.fetchData();
-    expect(fetchDataResult).toBe('Fetched license data from README successfully');
-});
+    await expect(license.fetchData()).rejects.toThrow('No response or data from the server');
+  });
+  
 
   it('should handle API errors in fetchData', async () => {
     mocked(axios.get).mockRejectedValue(new Error('API Error'));
