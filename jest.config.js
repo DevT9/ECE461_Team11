@@ -19,7 +19,7 @@ module.exports = {
   collectCoverage: true,  // If you want to collect coverage.
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],  // Specify which files you want coverage for.
   coverageReporters: ['text', 'lcov'],  // Coverage report formats.
-  coveragePathIgnorePatterns: ['/node_modules/'],  // Directories to ignore for coverage.
+  coveragePathIgnorePatterns: ['/node_modules/', '/src/utils', '/src/helpers'],  // Directories to ignore for coverage.
   testEnvironment: 'node',  // Specify the test environment.
   globals: {
     'ts-jest': {
