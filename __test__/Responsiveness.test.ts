@@ -111,7 +111,7 @@ describe('Responsiveness Class', () => {
     mocked(responsivenessApi.fetchIssueComments).mockResolvedValue([
       {
         created_at: new Date('2023-01-01T00:00:00Z').toISOString(),
-        updated_at: new Date('2023-01-01T01:00:00Z').toISOString() // 60분 후에 응답
+        updated_at: new Date('2023-01-01T01:00:00Z').toISOString() // 60
       }
     ]);
     mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([]);
@@ -132,7 +132,7 @@ describe('Responsiveness Class', () => {
     mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([
       {
         created_at: new Date('2023-01-01T01:00:00Z').toISOString(),
-        updated_at: new Date('2023-01-01T02:00:00Z').toISOString() // 60분 후에 응답
+        updated_at: new Date('2023-01-01T02:00:00Z').toISOString() // 60
       }
     ]);
     mocked(responsivenessApi.fetchPullRequestMergeTime).mockResolvedValue(null);
