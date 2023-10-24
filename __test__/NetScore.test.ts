@@ -1,17 +1,29 @@
-import { NetScore } from '../src/controllers/NetScore';
+import { NET_SCORE } from '../src/controllers/NetScore';
 import { correctness } from '../src/controllers/correctness';
 import { calculateBusFactor } from '../src/controllers/BusFactor';
 import { Responsiveness } from '../src/controllers/Responsiveness';
 import { License } from '../src/controllers/License';
 
+// jest.mock('../src/controllers/correctness', () => ({
+//   correctness: jest.fn(() => ({
+//     check: jest.fn(() => 0.8), // Mock correctness score
+//   })),
+// }));
+
+const mockCorrectness = jest.fn(() => ({
+  check: jest.fn(() => 0.8),
+}));
 jest.mock('../src/controllers/correctness', () => ({
-  correctness: jest.fn(() => ({
-    check: jest.fn(() => 0.8), // Mock correctness score
-  })),
+  correctness: mockCorrectness,
 }));
 
+// jest.mock('../src/controllers/BusFactor', () => ({
+//   calculateBusFactor: jest.fn(() => 0.6), // Mock bus factor score
+// }));
+
+const mockedCalculateBusFactor = jest.fn(() => 0.6); // Mock bus factor score
 jest.mock('../src/controllers/BusFactor', () => ({
-  calculateBusFactor: jest.fn(() => 0.6), // Mock bus factor score
+  calculateBusFactor: mockedCalculateBusFactor,
 }));
 
 jest.mock('../src/controllers/RampUp', () => ({
@@ -32,25 +44,25 @@ jest.mock('../src/controllers/License', () => ({
 
 describe('NetScore', () => {
   it('calculates the net score correctly', async () => {
-    const netScore = new NetScore('github_owner', 'repository_name');
+    const netScore = new NET_SCORE('github_owner', 'repository_name');
     const score = await netScore.calculate();
 
     expect(correctness).toHaveBeenCalledWith('github_owner', 'repository_name');
     expect(calculateBusFactor).toHaveBeenCalled();
-    expect(Responsiveness.calculate).toHaveBeenCalledWith('github_owner', 'repository_name');
-    expect(License.calculate).toHaveBeenCalled();
+    expect(Responsiveness).toHaveBeenCalledWith('github_owner', 'repository_name');
+    expect(License).toHaveBeenCalled();
 
     // Expected score calculation: 0.8 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.95
     expect(score).toBe(3.95);
   });
   it('calculates the net score with minimum values correctly', async () => {
     // Mock correctness to return the minimum score
-    correctness.mockImplementation(() => ({
-      check: jest.fn(() => 0),
+    mockCorrectness.mockImplementation(() => ({
+      check:jest.fn(() => 0),
     }));
 
     // Mock other dependencies as before
-    const netScore = new NetScore('github_owner', 'repository_name');
+    const netScore = new NET_SCORE('github_owner', 'repository_name');
     const score = await netScore.calculate();
 
     // Expected score calculation: 0 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
@@ -59,12 +71,12 @@ describe('NetScore', () => {
 
   it('calculates the net score with maximum values correctly', async () => {
     // Mock correctness to return the maximum score
-    correctness.mockImplementation(() => ({
+    mockCorrectness.mockImplementation(() => ({
       check: jest.fn(() => 1),
     }));
 
     // Mock other dependencies as before
-    const netScore = new NetScore('github_owner', 'repository_name');
+    const netScore = new NET_SCORE('github_owner', 'repository_name');
     const score = await netScore.calculate();
 
     // Expected score calculation: 1 (correctness) + 0.6 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.15
@@ -73,10 +85,10 @@ describe('NetScore', () => {
 
   it('calculates the net score with zero bus factor correctly', async () => {
     // Mock bus factor to return zero
-    calculateBusFactor.mockImplementation(() => 0);
+    mockedCalculateBusFactor.mockImplementation(() => 0);
 
     // Mock other dependencies as before
-    const netScore = new NetScore('github_owner', 'repository_name');
+    const netScore = new NET_SCORE('github_owner', 'repository_name');
     const score = await netScore.calculate();
 
     // Expected score calculation: 0.8 (correctness) + 0 (bus factor) + 0.7 (ramp-up) + 0.9 (responsiveness) + 0.95 (license) = 3.35

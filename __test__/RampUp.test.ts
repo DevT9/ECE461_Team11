@@ -1,5 +1,4 @@
 import { calculateRampUp } from '../src/controllers/RampUp';
-import { correctness } from '../src/controllers/correctness';
 
 jest.mock('../src/utils/RampUpAPI', () => ({
   fetchRepositoryContributors: jest.fn(() => Promise.resolve([])),

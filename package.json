@@ -7,14 +7,14 @@
     "start": "npm run prettier-format && tsc && node dist/index.js",
     "dev": "npm run prettier-format && nodemon --exec ts-node src/index.ts",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "test": "jest"
+    "test": "node_modules/.bin/jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/eslint": "^8.44.3",
-    "@types/jest": "^29.5.5",
+    "@types/jest": "^29.5.6",
     "@types/node": "^20.6.0",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
