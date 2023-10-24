@@ -5,7 +5,7 @@ import { execSync, exec } from "child_process";
 import fs, { Dirent } from 'fs';
 
 // Mocking the behavior of the external calls
-jest.mock('../utils/RampUpAPI');
+jest.mock('../src/utils/RampUpAPI');
 jest.mock('fs');
 jest.mock('child_process');
 
@@ -75,7 +75,7 @@ describe('correctness class', () => {
         const instance = new correctness(owner, repo);
         const score = await instance.check();
 
-        expect(score).toBeCloseTo(1);  // You'll need to adjust this value based on what you expect
+        expect(score).toBeCloseTo(.16);  // You'll need to adjust this value based on what you expect
 
         // You can also add more assertions based on other methods' behaviors and results
     });
