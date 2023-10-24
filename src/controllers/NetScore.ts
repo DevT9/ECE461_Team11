@@ -6,7 +6,7 @@ import { License } from "./License";
 
 export class NET_SCORE {
     constructor(private owner: string, private repo: string) {
-    };
+    }
     async calculate(): Promise<{NET_SCORE: number, RAMP_UP_SCORE: number, CORRECTNESS_SCORE: number, BUS_FACTOR_SCORE: number, RESPONSIVE_MAINTAINER_SCORE: number, LICENSE_SCORE: number}> {
         ////console.log("HERE");
         const correctnessobj = new correctness(this.owner, this.repo);
@@ -21,7 +21,7 @@ export class NET_SCORE {
         let BUS_FACTOR_SCORE = 0;
         try {
             BUS_FACTOR_SCORE = await calculateBusFactor(this.owner, this.repo);
-            ////console.log("BusFactor", BUS_FACTOR_SCORE);
+            // console.log("BusFactor", BUS_FACTOR_SCORE);
         } catch(e) {
             ////console.log("Error", e);
         }

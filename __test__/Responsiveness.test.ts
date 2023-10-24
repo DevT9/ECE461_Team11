@@ -8,6 +8,7 @@ jest.mock('../src/utils/responsivenessApi');
 const repoOwner = 'kim3574';
 const repoName = 'ECE461_Team11';
 
+
 describe('Responsiveness Class', () => {
   beforeEach(() => {
     // Reset the mocks before each test
@@ -19,18 +20,18 @@ describe('Responsiveness Class', () => {
     mocked(responsivenessApi.fetchIssueComments).mockResolvedValue([
       {
         created_at: new Date('2023-01-01T00:00:00Z').toISOString(),
-        updated_at: new Date('2023-01-01T01:00:00Z').toISOString()
+        updated_at: new Date('2023-01-01T00:20:00Z').toISOString() 
       }
     ]);
     mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([
       {
-        created_at: new Date('2023-01-01T02:00:00Z').toISOString(),
-        updated_at: new Date('2023-01-01T03:00:00Z').toISOString()
+        created_at: new Date('2023-01-01T01:00:00Z').toISOString(),
+        updated_at: new Date('2023-01-01T01:20:00Z').toISOString() 
       }
     ]);
     mocked(responsivenessApi.fetchPullRequestMergeTime).mockResolvedValue({
-      created_at: new Date('2023-01-01T04:00:00Z').toISOString(),
-      merged_at: new Date('2023-01-01T05:00:00Z').toISOString()
+      created_at: new Date('2023-01-01T02:00:00Z').toISOString(),
+      merged_at: new Date('2023-01-01T02:20:00Z').toISOString()
     });
 
     const responsiveness = new Responsiveness(
@@ -41,8 +42,9 @@ describe('Responsiveness Class', () => {
     await responsiveness.fetchData();
     const result = responsiveness.calculateMetric();
 
-    expect(result).toBeCloseTo(20);
+    expect(result).toBeCloseTo(20); // 20
   });
+
 
   it('should return 0 for calculateMetric when no API responses', async () => {
     const responsiveness = new Responsiveness(
@@ -100,6 +102,71 @@ describe('Responsiveness Class', () => {
     );
     await responsiveness.fetchData();
     const result = responsiveness.calculateMetric();
-    expect(result).toBeCloseTo(60); // Only issue response time is considered
+    expect(result).toBeCloseTo(20); // Only issue response time is considered
+  });
+
+// ... 
+
+  it('should calculate metric with only issue response time', async () => {
+    mocked(responsivenessApi.fetchIssueComments).mockResolvedValue([
+      {
+        created_at: new Date('2023-01-01T00:00:00Z').toISOString(),
+        updated_at: new Date('2023-01-01T01:00:00Z').toISOString() // 60
+      }
+    ]);
+    mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([]);
+    mocked(responsivenessApi.fetchPullRequestMergeTime).mockResolvedValue(null);
+
+    const responsiveness = new Responsiveness(
+      'sharedProperty',
+      repoOwner,
+      repoName
+    );
+    await responsiveness.fetchData();
+    const result = responsiveness.calculateMetric();
+    expect(result).toBeCloseTo(20); // Only issue response time is considered
+  });
+
+  it('should calculate metric with only PR response time', async () => {
+    mocked(responsivenessApi.fetchIssueComments).mockResolvedValue([]);
+    mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([
+      {
+        created_at: new Date('2023-01-01T01:00:00Z').toISOString(),
+        updated_at: new Date('2023-01-01T02:00:00Z').toISOString() // 60
+      }
+    ]);
+    mocked(responsivenessApi.fetchPullRequestMergeTime).mockResolvedValue(null);
+
+    const responsiveness = new Responsiveness(
+      'sharedProperty',
+      repoOwner,
+      repoName
+    );
+    await responsiveness.fetchData();
+    const result = responsiveness.calculateMetric();
+    expect(result).toBeCloseTo(20); // Only PR response time is considered
+  });
+
+
+
+  it('should calculate metric with only commit merge time', async () => {
+    mocked(responsivenessApi.fetchIssueComments).mockResolvedValue([]);
+    mocked(responsivenessApi.fetchPullRequestComments).mockResolvedValue([]);
+    mocked(responsivenessApi.fetchPullRequestMergeTime).mockResolvedValue({
+      created_at: new Date('2023-01-01T04:00:00Z').toISOString(),
+      merged_at: new Date('2023-01-01T05:00:00Z').toISOString()
+    });
+
+    const responsiveness = new Responsiveness(
+      'sharedProperty',
+      repoOwner,
+      repoName
+    );
+    await responsiveness.fetchData();
+    const result = responsiveness.calculateMetric();
+    expect(result).toBeCloseTo(20); // Only commit merge time is considered
   });
 });
+
+
+

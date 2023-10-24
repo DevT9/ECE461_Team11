@@ -1,3 +1,5 @@
+//src/controllers/Linces.ts
+
 import { MetricParent } from '../helpers/MetricParent';
 import axios from 'axios';
 
@@ -15,22 +17,32 @@ export class License extends MetricParent {
   async fetchData(): Promise<any> {
     const url = `https://raw.githubusercontent.com/${this.repoOwner}/${this.repoName}/master/README.md`;
     try {
-      const response = await axios.get(url);
-      const readmeContent = response.data;
+        const response = await axios.get(url);
+        
+        // Check if response or response.data is null or undefined
+        if (!response || !response.data) {
+            return Promise.reject(new Error('No response or data from the server'));
+        }
 
-      // Use regex to extract license description from README
-      const licenseRegex = /##\s*License\s*([\s\S]*?)(##|$)/i;
-      const match = licenseRegex.exec(readmeContent);
-      if (match && match[1]) {
-        this.licenseDescription = match[1].trim();
-      }
+        const readmeContent = response.data;
 
-      return Promise.resolve('Fetched license data from README successfully');
+        // Use regex to extract license description from README
+        const licenseRegex = /##\s*License\s*([\s\S]*?)(##|$)/i;
+        const match = licenseRegex.exec(readmeContent);
+        if (match && match[1]) {
+            this.licenseDescription = match[1].trim();
+        }
+
+        return Promise.resolve('Fetched license data from README successfully');
     } catch (error) {
-      //console.error('Error fetching README data:', error);
-      return Promise.reject(error);
+        //console.error('Error fetching README data:', error);
+        return Promise.reject(error);
     }
-  }
+}
+
+
+
+  
 
   calculateMetric(): number {
     if (this.licenseDescription.includes('LGPLv2.1')) {
