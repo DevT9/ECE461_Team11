@@ -1,12 +1,14 @@
+//__test__/License.test.ts
 import { License } from '../src/controllers/License';
-import * as licenseApi from '../src/utils/licenseApi';
+import axios from 'axios';
 import { mocked } from 'jest-mock';
 
-// Mock the licenseApi methods
-jest.mock('../src/utils/licenseApi');
+// Mock the axios.get method
+jest.mock('axios');
 
 const repoOwner = 'kim3574';
 const repoName = 'ECE461_Team11';
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('License Class', () => {
   beforeEach(() => {
@@ -16,24 +18,20 @@ describe('License Class', () => {
 
   it('should fetch data and calculate metric', async () => {
     // Mock API response
-    mocked(licenseApi.fetchLicense).mockResolvedValue({
-      license: {
-        spdx_id: 'MIT'
-      }
+    mocked(axios.get).mockResolvedValue({
+      data: "## License\n\nLGPLv2.1\n\n## Another Section"
     });
 
     const license = new License('sharedProperty', repoOwner, repoName);
     await license.fetchData();
     const result = license.calculateMetric();
 
-    expect(result).toBe(10); // MIT license score
+    expect(result).toBe(10); // LGPLv2.1 license score
   });
 
   it('should return 1 for calculateMetric when unknown license', async () => {
-    mocked(licenseApi.fetchLicense).mockResolvedValue({
-      license: {
-        spdx_id: 'UNKNOWN'
-      }
+    mocked(axios.get).mockResolvedValue({
+      data: "## License\n\nUNKNOWN\n\n## Another Section"
     });
 
     const license = new License('sharedProperty', repoOwner, repoName);
@@ -44,15 +42,16 @@ describe('License Class', () => {
   });
 
   it('should handle empty API responses in fetchData', async () => {
-    mocked(licenseApi.fetchLicense).mockResolvedValue(null);
+    // Mock axios.get response
+    mockedAxios.get.mockResolvedValueOnce({ data: null });
 
     const license = new License('sharedProperty', repoOwner, repoName);
     const fetchDataResult = await license.fetchData();
-    expect(fetchDataResult).toBe('Fetched license data successfully');
-  });
+    expect(fetchDataResult).toBe('Fetched license data from README successfully');
+});
 
   it('should handle API errors in fetchData', async () => {
-    mocked(licenseApi.fetchLicense).mockRejectedValue(new Error('API Error'));
+    mocked(axios.get).mockRejectedValue(new Error('API Error'));
 
     const license = new License('sharedProperty', repoOwner, repoName);
     await expect(license.fetchData()).rejects.toThrow('API Error');
